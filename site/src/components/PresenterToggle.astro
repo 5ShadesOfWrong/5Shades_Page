@@ -1,0 +1,83 @@
+---
+/**
+ * PresenterToggle.astro — reader/presenter mode switch (DESIGN_PLAN §4)
+ * ---------------------------------------------------------------------
+ * A small fixed control that toggles `data-presenter` on <html>.
+ * Presenter mode: larger type (tokens.css), click-to-reveal scenario cards
+ * (scenario.ts), projection-friendly spacing.
+ *
+ * The initial state is applied pre-paint by BaseLayout's inline bootstrap
+ * (no FOUC). This component only flips the attribute and persists it.
+ *
+ * Security: no dynamic content; state persisted as a bare string in
+ * localStorage under a fixed key.
+ */
+---
+
+<button
+	type="button"
+	class="presenter-toggle"
+	data-presenter-toggle
+	aria-pressed="false"
+	title="Toggle presenter mode (projection-friendly, click-to-reveal cards)"
+>
+	<span class="icon" aria-hidden="true">
+		<!-- projector icon -->
+		<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+			<rect x="1.5" y="3" width="13" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+			<path d="M5 13.5h6M8 11v2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+			<circle cx="8" cy="7" r="1.75" stroke="currentColor" stroke-width="1.5"/>
+		</svg>
+	</span>
+	<span class="label">Presenter mode</span>
+</button>
+
+<style>
+	.presenter-toggle {
+		position: fixed;
+		bottom: var(--space-4);
+		right: calc(var(--navrail-width) + var(--space-4));
+		z-index: 60;
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
+		padding: var(--space-2) var(--space-3);
+		background: var(--color-bg-overlay);
+		color: var(--color-text-muted);
+		border: 1px solid var(--color-border);
+		border-radius: 999px;
+		font-family: var(--font-body);
+		font-size: var(--text-xs);
+		cursor: pointer;
+		transition: color var(--duration-fast) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out);
+	}
+
+	.presenter-toggle:hover {
+		color: var(--color-text);
+		border-color: var(--color-model);
+	}
+
+	/* Active state — also driven by html[data-presenter] for pre-paint sync */
+	.presenter-toggle[aria-pressed='true'] {
+		color: var(--color-model);
+		border-color: var(--color-model);
+	}
+
+	.icon {
+		display: inline-flex;
+	}
+
+	@media (max-width: 768px) {
+		.presenter-toggle {
+			right: var(--space-4);
+			bottom: var(--space-4);
+		}
+
+		.label {
+			display: none; /* icon-only on small screens */
+		}
+	}
+</style>
+
+<script src="../scripts/presenter.ts"></script>

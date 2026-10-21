@@ -1,0 +1,85 @@
+---
+/**
+ * Takeaway.astro — §6 objective vs. conceived wrongness (DESIGN_PLAN §4)
+ * ----------------------------------------------------------------------
+ * The paper's closing message (p.28): explanations can be wrong; we cannot
+ * ensure they never will be; the goal is calibration between objective and
+ * conceived wrongness.
+ *
+ * Security: static content, auto-escaped.
+ */
+---
+
+<section id="takeaway" class="section" aria-labelledby="takeaway-title">
+	<div class="container">
+		<h2 id="takeaway-title">Takeaway</h2>
+
+		<div class="message">
+			<p class="big">
+				Explanations <em>can</em> be wrong. But we cannot ensure they will
+				<em>never</em> be wrong.
+			</p>
+			<p class="support">
+				Risks emerge whenever misconceptions about <strong>objective
+				wrongness</strong> appear: stakeholders hold personal conceptions —
+				<strong>conceived wrongness</strong> — and may perceive an objectively
+				invalid explanation as valid, a valid one as invalid, or misread invalidity
+				as incoherence or unfaithfulness.
+			</p>
+		</div>
+
+		<div class="calibration" role="note">
+			<h3>The goal: calibration</h3>
+			<p>
+				Align what stakeholders <em>believe</em> about an explanation with what is
+				<em>actually</em> true of it. That is what the three lenses are for —
+				<a href="#workflow">assess deliberately</a> instead of guessing.
+			</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	.message {
+		margin-top: var(--space-8);
+		max-width: 56ch;
+	}
+
+	.big {
+		font-family: var(--font-display);
+		font-size: var(--text-2xl);
+		line-height: var(--leading-tight);
+	}
+
+	.big em {
+		color: var(--color-model);
+		font-style: normal;
+		border-bottom: 2px solid var(--color-model);
+	}
+
+	.support {
+		margin-top: var(--space-6);
+		color: var(--color-text-muted);
+	}
+
+	.support strong {
+		color: var(--color-text);
+	}
+
+	.calibration {
+		margin-top: var(--space-12);
+		padding: var(--space-8);
+		background: var(--color-bg-raised);
+		border: 1px solid color-mix(in srgb, var(--color-model) 45%, var(--color-border));
+		border-radius: var(--radius-lg);
+		max-width: 56ch;
+	}
+
+	.calibration h3 {
+		color: var(--color-model);
+	}
+
+	.calibration p {
+		margin-top: var(--space-3);
+	}
+</style>

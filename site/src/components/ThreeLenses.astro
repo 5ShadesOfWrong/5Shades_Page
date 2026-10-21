@@ -1,0 +1,116 @@
+---
+/**
+ * ThreeLenses.astro — §2 The Three Lenses (DESIGN_PLAN §4)
+ * ---------------------------------------------------------
+ * Section wrapper: intro copy + the PipelineDiagram (which highlights each
+ * lens as its card is in view — Phase 3 wires the scroll-linking) + one
+ * LensCard per lens from lenses.json.
+ *
+ * Security: data from typed JSON; auto-escaped rendering.
+ */
+import lenses from '../data/lenses.json';
+import PipelineDiagram from './PipelineDiagram.astro';
+import LensCard from './LensCard.astro';
+import type { LensesData } from '../schemas/schemas';
+
+// Cast through unknown: JSON import is untyped; the shape is enforced by
+// src/schemas/validate.ts at build time.
+const lensList = (lenses as unknown as LensesData).lenses;
+---
+
+<section id="three-lenses" class="section" aria-labelledby="lenses-title">
+	<div class="container">
+		<h2 id="lenses-title" data-reveal>The Three Lenses</h2>
+		<p class="intro" data-reveal data-reveal-delay="1">
+			An explanation can be judged against three reference points — each one a
+			different way of being wrong. Usually you can only observe the explanation
+			itself, so start there and work outward.
+		</p>
+
+		<div class="lenses-grid">
+			<!-- Left column: diagram + steps, sticky while cards scroll beside them -->
+			<div class="lenses-side">
+				<div class="diagram" data-reveal>
+					<PipelineDiagram highlight="none" id="lenses-diagram" />
+				</div>
+
+				<ol class="lens-steps" role="list">
+					<li data-reveal>Observe the explanation itself to judge <strong>coherence</strong>.</li>
+					<li data-reveal data-reveal-delay="1">Consider the ground truth to judge <strong>validity</strong>.</li>
+					<li data-reveal data-reveal-delay="2">Consider the actual model behavior to judge <strong>faithfulness</strong>.</li>
+				</ol>
+			</div>
+
+			<!-- Right column: one lens card per lens -->
+			<div class="lens-cards">
+				{ lensList.map((lens, i) => <div data-reveal data-reveal-delay={i % 3}><LensCard lens={lens} /></div>) }
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.intro {
+		margin-top: var(--space-4);
+		font-size: var(--text-lg);
+		color: var(--color-text-muted);
+		max-width: 56ch;
+	}
+
+	/* ---- Two-column layout: sticky reference left, cards right ---- */
+	.lenses-grid {
+		margin-top: var(--space-12);
+		display: grid;
+		grid-template-columns: minmax(18rem, 26rem) 1fr;
+		gap: var(--space-16);
+		align-items: start;
+	}
+
+	.lenses-side {
+		position: sticky;
+		top: 18vh;
+		display: grid;
+		gap: var(--space-8);
+	}
+
+	.diagram {
+		max-width: 26rem;
+	}
+
+	.lens-steps {
+		padding-left: var(--space-6);
+		display: grid;
+		gap: var(--space-2);
+		color: var(--color-text-muted);
+	}
+
+	.lens-steps strong {
+		color: var(--color-text);
+	}
+
+	.lens-cards {
+		display: grid;
+		gap: var(--space-8);
+		max-width: 44rem; /* readable measure, no dead space to the right */
+	}
+
+	/* ---- Mobile: single column, side flows above cards ---- */
+	@media (max-width: 1000px) {
+		.lenses-grid {
+			grid-template-columns: 1fr;
+			gap: var(--space-8);
+		}
+
+		.lenses-side {
+			position: static;
+		}
+
+		.diagram {
+			max-width: 30rem;
+		}
+
+		.lens-cards {
+			max-width: none;
+		}
+	}
+</style>

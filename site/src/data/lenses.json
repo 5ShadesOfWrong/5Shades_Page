@@ -1,0 +1,121 @@
+{
+	"$comment": "lenses.json — the three wrongness dimensions. Source: paper p.3–8. Each lens: definition, one valid + one flawed example, and the facets of failure listed in the paper.",
+	"lenses": [
+		{
+			"id": "coherence",
+			"number": 1,
+			"name": "Coherence",
+			"relationship": "Explanation ↔ itself",
+			"definition": "Whether the explanation maintains a consistent and logical internal structure. A lack of coherence means the internal structure is logically conflicting, contradictory, or structurally impossible — independent of whether premises and conclusions are valid.",
+			"goodExample": {
+				"setup": "A movie recommender suggests “Inception”.",
+				"explanation": "“You rated ‘Interstellar’ 5 stars, and both films are directed by Christopher Nolan.”",
+				"why": "Coherent even if you end up not enjoying “Inception” — the internal logic holds."
+			},
+			"flawedExample": {
+				"setup": "Same recommendation.",
+				"explanation": "“You rated ‘Interstellar’ 5 stars, and both films are directed by Sofia Coppola.”",
+				"why": "The premise is factually wrong, yet the internal logic remains coherent — wrongness here belongs to validity, not coherence."
+			},
+			"facets": [
+				{
+					"name": "Contradictory feature values",
+					"example": "A CV-screening attribution reports the candidate is eligible because he was born in 1970 and is aged 20."
+				},
+				{
+					"name": "Contradictory attribution",
+					"example": "Higher income simultaneously boosted the creditworthiness score (+30) and dropped it (−20) for the exact same instance."
+				},
+				{
+					"name": "Contradictory counterfactual",
+					"example": "A counterfactual suggests keeping your age and increasing work experience by 10 years to get the loan approved."
+				},
+				{
+					"name": "Contradictory examples",
+					"example": "An example-based method for “cat” returns a cat, a dog, and a car."
+				},
+				{
+					"name": "Contradictory semantics",
+					"example": "An LLM rationale justifies a recommendation with mutually exclusive premises (“you love romantic comedies and strictly avoid romantic films”)."
+				}
+			],
+			"footnote": "An explanation is already incoherent if it corresponds to a single facet. It can — but does not need to — correspond to multiple facets."
+		},
+		{
+			"id": "validity",
+			"number": 2,
+			"name": "Validity",
+			"relationship": "Explanation ↔ ground truth",
+			"definition": "Whether the explanation aligns with the real-world ground truth the model seeks to reflect — both the factual premises and the ground-truth outcomes. A lack of validity means the explanation asserts factually incorrect claims and/or misrepresents actual patterns or causal relations.",
+			"goodExample": {
+				"setup": "An email filter correctly flags a message as spam.",
+				"explanation": "“Flagged because it was sent from an unknown sender, contains 12 suspicious links, and asks for your banking passwords.”",
+				"why": "Every claim matches the real-world facts of the message."
+			},
+			"flawedExample": {
+				"setup": "A weather forecast correctly predicts rain today.",
+				"explanation": "“Rain is expected because of low humidity.”",
+				"why": "The prediction is right, but the stated cause is factually wrong — an invalid premise."
+			},
+			"facets": [
+				{
+					"name": "Invalid feature values",
+					"example": "A loan is rejected with “current bank balance is $0”, when the applicant's real balance is $50,000."
+				},
+				{
+					"name": "Factually wrong premise",
+					"example": "Correct rain prediction explained by low humidity."
+				},
+				{
+					"name": "Invalid target label",
+					"example": "A CV-screening attribution justifies a candidate as eligible who turns out to be ineligible."
+				},
+				{
+					"name": "Causal misattribution",
+					"example": "A diagnostic AI correctly predicts engine failure but blames the “Check Engine” light turning on instead of the physical cause."
+				}
+			],
+			"footnote": "An explanation is already invalid if it corresponds to a single facet. It can — but does not need to — correspond to multiple facets."
+		},
+		{
+			"id": "faithfulness",
+			"number": 3,
+			"name": "Faithfulness",
+			"relationship": "Explanation ↔ model behavior",
+			"definition": "How well the explanation represents the true internal reasoning and mechanics of the AI model. A lack of faithfulness means the explanation is misaligned with how the model actually processed the input to reach its prediction.",
+			"goodExample": {
+				"setup": "A spam filter assigns 90% of its internal risk weight to the phrase “claim your free prize now”.",
+				"explanation": "The feature attribution reports “claim your free prize now” as the top factor driving the spam classification.",
+				"why": "The reported driver matches the model's actual internal weighting."
+			},
+			"flawedExample": {
+				"setup": "A CV-screening model internally uses zip code as a proxy for race to reject an applicant.",
+				"explanation": "The post-hoc report lists only years of experience and education level.",
+				"why": "The decisive feature is completely omitted — an incomplete attribution."
+			},
+			"facets": [
+				{
+					"name": "Incomplete attribution",
+					"example": "Zip code drives the rejection but is omitted from the explanation report."
+				},
+				{
+					"name": "Inverse attribution",
+					"example": "The explanation says lower age increases risk; in the model's decision tree, lower age decreases it."
+				},
+				{
+					"name": "Irrelevant attribution",
+					"example": "Coding skills are highlighted as decisive, but changing the skill level yields the exact same score."
+				},
+				{
+					"name": "Ineffective counterfactual",
+					"example": "“Add $2,000 to savings for approval” — the user does exactly that and is still rejected."
+				},
+				{
+					"name": "LLM rationalization",
+					"example": "The model cites a clinical trial, but probing internal activations shows the output was driven by token co-occurrence in pre-training data."
+				}
+			],
+			"footnote": "An explanation is already unfaithful if it corresponds to a single facet. It can — but does not need to — correspond to multiple facets."
+		}
+	]
+}

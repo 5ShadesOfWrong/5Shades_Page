@@ -1,0 +1,211 @@
+---
+/**
+ * HowToAccess.astro — §1 "How to Access" (user review 2026-10-19)
+ * ----------------------------------------------------------------
+ * Introduces the idea of wrongness exactly like the source material:
+ * the motivating example, then the assessment flow (steps 0–3) as the
+ * "how to use this page" — not reader/presenter mode cards.
+ *
+ * The four steps render as an interactive ladder: each lights up as it
+ * enters the viewport (reveal.ts + CSS), previewing the workflow.
+ *
+ * Security: static content, auto-escaped.
+ */
+import site from '../data/site.json';
+
+// BASE_URL keeps the link correct when GitHub Pages serves from a subpath.
+const paperHref = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${site.paper.file.replace(/^\//, '')}`;
+
+const steps = [
+	{
+		number: 0,
+		title: 'Read the context',
+		text: 'Understand the scenario — the AI system, its purpose, and who engages with the explanation.',
+	},
+	{
+		number: 1,
+		title: 'Observe the explanation itself',
+		text: 'Judge its (internal logical) coherence — does the explanation hold together on its own?',
+	},
+	{
+		number: 2,
+		title: 'Consider the ground truth',
+		text: 'Judge validity — does the explanation align with what is actually true?',
+	},
+	{
+		number: 3,
+		title: 'Consider the actual model behavior',
+		text: 'Judge faithfulness — does the explanation reflect how the model really worked?',
+	},
+];
+---
+
+<section id="how-to-access" class="section" aria-labelledby="access-title">
+	<div class="container">
+		<h2 id="access-title">How to Assess</h2>
+		<p class="intro">
+			Explanations can be wrong — but &ldquo;wrong&rdquo; is not one thing. The
+			scenarios in this page describe hypothetical situations in which a
+			stakeholder engages with an explanation of a concrete AI model. Each
+			scenario is self-contained, so models and explanations vary between
+			scenarios.
+		</p>
+
+		<aside class="teaser" data-reveal aria-label="Motivating example">
+			<blockquote>
+				<p>
+					&ldquo;The applicant was rejected <strong>because job experience is too
+					high</strong>.&rdquo;
+				</p>
+			</blockquote>
+			<p class="teaser-question">
+				You suspect this cannot be right. But is it wrong because the applicant
+				should have been accepted? Because that is not how the model works?
+				Or both?
+			</p>
+			<p class="teaser-answer">
+				It depends which reference point you use to judge the explanation —
+				and there are <a href="#three-lenses">three of them</a>.
+			</p>
+		</aside>
+
+		<h3 class="flow-title">Every scenario is assessed the same way:</h3>
+		<ol class="flow" role="list">
+			{
+				steps.map((step, i) => (
+					<li class="flow-step" data-reveal data-reveal-delay={i}>
+						<span class="flow-number">{step.number}</span>
+						<div>
+							<h4>{step.title}</h4>
+							<p>{step.text}</p>
+						</div>
+					</li>
+				))
+			}
+		</ol>
+
+		<p class="paper-link">
+			Prefer the source? <a href={paperHref} target="_blank" rel="noopener noreferrer"
+				>{site.paper.label}</a
+			>
+		</p>
+	</div>
+</section>
+
+<style>
+	.intro {
+		margin-top: var(--space-4);
+		font-size: var(--text-lg);
+		color: var(--color-text-muted);
+		max-width: 56ch;
+	}
+
+	/* ---- Motivating example teaser ---- */
+	.teaser {
+		margin-top: var(--space-12);
+		border-left: 3px solid var(--color-model);
+		padding: var(--space-6) var(--space-8);
+		background: var(--color-bg-raised);
+		border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+		box-shadow: var(--shadow-card);
+	}
+
+	.teaser blockquote {
+		margin: 0;
+	}
+
+	.teaser blockquote p {
+		font-size: var(--text-2xl);
+		font-family: var(--font-display);
+	}
+
+	.teaser blockquote strong {
+		color: var(--color-negative);
+	}
+
+	.teaser-question {
+		margin-top: var(--space-4);
+		color: var(--color-text-muted);
+	}
+
+	.teaser-answer {
+		margin-top: var(--space-4);
+		font-weight: 600;
+	}
+
+	/* ---- Assessment flow ladder ---- */
+	.flow-title {
+		margin-top: var(--space-16);
+		font-size: var(--text-xl);
+	}
+
+	.flow {
+		margin-top: var(--space-6);
+		padding: 0;
+		list-style: none;
+		display: grid;
+		/* 2×2 arrangement (user review): steps 0→1 fill the LEFT column,
+		   steps 2→3 the RIGHT — halves the vertical space of the ladder. */
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: repeat(2, auto);
+		grid-auto-flow: column;
+		gap: var(--space-4);
+		max-width: 56rem;
+	}
+
+	.flow-step {
+		display: flex;
+		gap: var(--space-4);
+		align-items: flex-start;
+		padding: var(--space-4) var(--space-6);
+		background: var(--color-bg-raised);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		transition: border-color var(--duration-normal) var(--ease-out),
+			transform var(--duration-normal) var(--ease-out);
+	}
+
+	.flow-step:hover {
+		border-color: var(--color-model);
+		transform: translateX(4px);
+	}
+
+	.flow-number {
+		flex-shrink: 0;
+		display: grid;
+		place-items: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 50%;
+		border: 2px solid var(--color-model);
+		color: var(--color-model);
+		font-family: var(--font-mono);
+		font-weight: 600;
+	}
+
+	.flow-step h4 {
+		font-size: var(--text-base);
+	}
+
+	.flow-step p {
+		margin-top: var(--space-1);
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+	}
+
+	/* ---- Mobile: back to a single vertical ladder ---- */
+	@media (max-width: 760px) {
+		.flow {
+			grid-template-columns: 1fr;
+			grid-auto-flow: row;
+			max-width: 44rem;
+		}
+	}
+
+	.paper-link {
+		margin-top: var(--space-12);
+		color: var(--color-text-muted);
+	}
+</style>
+
+</style>

@@ -1,0 +1,23 @@
+{
+	"$comment": "site.json — global site metadata. The PAPER is the research article this site presents. Placeholder values (authors, links, paper PDF) are replaced at launch. The tutorial deck is an internal working reference and is intentionally NOT cited anywhere on the page.",
+	"title": "Explanation Wrongness",
+	"subtitle": "Three lenses to tell when an AI explanation is wrong — and which kind of wrong it is.",
+	"kicker": "An interactive companion to the paper",
+	"paper": {
+		"title": "5(0) Shades of Wrong: Disentangling the Wrongness of AI Explanations",
+		"venue": "",
+		"file": "",
+		"label": "Read the paper"
+	},
+	"links": {
+		"scenarios": "#practice",
+		"contact": "mailto:authors@example.edu"
+	},
+	"authors": "Author One, Author Two, Author Three",
+	"license": "CC BY 4.0",
+	"bibtex": "@misc{shadesofwrong2026,\n  title     = {5(0) Shades of Wrong: Disentangling the Wrongness of AI Explanations},\n  author    = {Author One and Author Two and Author Three},\n  year      = {2026},\n  note      = {Companion site: Explanation Wrongness}\n}",
+	"tagline": {
+		"reader": "Scroll to learn: three lenses, six archetypes, thirteen scenarios.",
+		"presenter": "Present live: click-to-reveal cards, projection-ready sections."
+	}
+}

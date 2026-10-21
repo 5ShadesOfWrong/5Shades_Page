@@ -1,0 +1,192 @@
+---
+/**
+ * HeroSection.astro — §0 Hero (DESIGN_PLAN §4)
+ * --------------------------------------------
+ * Title "Explanation Wrongness" (user decision, 2026-10-19), the paper's
+ * subtitle as the hook question, CTAs (paper PDF / scenarios), and the
+ * presenter-mode toggle.
+ *
+ * Content comes from site.json (single source of truth).
+ * Security: static data from a typed JSON import; auto-escaped by Astro.
+ */
+import site from '../data/site.json';
+import PresenterToggle from './PresenterToggle.astro';
+import PipelineDiagram from './PipelineDiagram.astro';
+
+// BASE_URL keeps the link correct when GitHub Pages serves from a subpath.
+const paperHref = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${site.paper.file.replace(/^\//, '')}`;
+---
+
+<section id="hero" class="section hero" aria-labelledby="hero-title">
+	<div class="container hero-grid">
+		<div class="hero-copy">
+			<p class="kicker" data-reveal>{site.kicker}</p>
+			<h1 id="hero-title" data-reveal data-reveal-delay="1">{site.title}</h1>
+			<p class="lede" data-reveal data-reveal-delay="2">{site.subtitle}</p>
+
+			<p class="deck-ref" data-reveal data-reveal-delay="3">
+				Based on the paper: {site.paper.title}
+			</p>
+
+			<div class="cta-row" data-reveal data-reveal-delay="4">
+				<a class="cta cta-primary" href={site.links.scenarios}>Try the scenarios</a>
+				<a class="cta cta-secondary" href={paperHref} target="_blank" rel="noopener noreferrer">
+					{site.paper.label}
+				</a>
+			</div>
+
+			<p class="tagline" data-reveal data-reveal-delay="5">{site.tagline.reader}</p>
+		</div>
+
+		<div class="hero-visual" data-reveal data-reveal-delay="3" aria-hidden="true">
+			<PipelineDiagram highlight="none" id="hero-diagram" showLabels={false} />
+			<p class="visual-caption">Explanation · AI Model · Ground Truth</p>
+		</div>
+	</div>
+
+	<!-- Presenter toggle lives in the hero on desktop; fixed position via its own styles -->
+	<div class="hero-toggle">
+		<PresenterToggle />
+	</div>
+</section>
+
+<style>
+	.hero {
+		min-height: 92vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		position: relative;
+	}
+
+	/* Two-column hero: copy left, diagram right — uses the horizontal space
+	   instead of a narrow centered column (user review 2026-10-19). */
+	.hero-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		gap: var(--space-16);
+		align-items: center;
+		width: 100%;
+	}
+
+	.kicker {
+		color: var(--color-model);
+		font-size: var(--text-sm);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		font-weight: 600;
+	}
+
+	h1 {
+		font-size: clamp(2.75rem, 6vw, 4.5rem);
+		margin-top: var(--space-4);
+		color: var(--color-text);
+		line-height: 1.05;
+		letter-spacing: -0.02em;
+	}
+
+	.lede {
+		margin-top: var(--space-6);
+		font-size: var(--text-2xl);
+		color: var(--color-text-muted);
+		max-width: 30ch;
+		line-height: 1.35;
+	}
+
+	.deck-ref {
+		margin-top: var(--space-6);
+		font-family: var(--font-mono);
+		font-size: var(--text-sm);
+		color: var(--color-text-faint);
+		max-width: 44ch;
+	}
+
+	.cta-row {
+		margin-top: var(--space-8);
+		display: flex;
+		gap: var(--space-4);
+		flex-wrap: wrap;
+	}
+
+	.cta {
+		display: inline-flex;
+		align-items: center;
+		padding: var(--space-3) var(--space-6);
+		border-radius: var(--radius-md);
+		font-weight: 600;
+		text-decoration: none;
+		transition: transform var(--duration-fast) var(--ease-out),
+			background var(--duration-fast) var(--ease-out),
+			border-color var(--duration-fast) var(--ease-out),
+			box-shadow var(--duration-fast) var(--ease-out);
+	}
+
+	.cta:hover {
+		transform: translateY(-2px);
+	}
+
+	.cta-primary {
+		background: var(--color-model);
+		color: var(--color-bg-deep);
+		box-shadow: 0 4px 20px rgb(179 155 255 / 0.35);
+	}
+
+	.cta-primary:hover {
+		background: color-mix(in srgb, var(--color-model) 85%, white);
+		box-shadow: 0 6px 28px rgb(179 155 255 / 0.5);
+	}
+
+	.cta-secondary {
+		border: 1px solid var(--color-border);
+		color: var(--color-text);
+		background: transparent;
+	}
+
+	.cta-secondary:hover {
+		border-color: var(--color-model);
+	}
+
+	.tagline {
+		margin-top: var(--space-8);
+		color: var(--color-text-faint);
+		font-size: var(--text-sm);
+	}
+
+	/* ---- Right column: live diagram ---- */
+	.hero-visual {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+	}
+
+	.visual-caption {
+		text-align: center;
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		color: var(--color-text-faint);
+		letter-spacing: 0.08em;
+	}
+
+	/*
+	 * The PresenterToggle component is position:fixed by its own styles;
+	 * this wrapper only reserves layout space in the hero flow.
+	 */
+	.hero-toggle {
+		position: absolute;
+		width: 0;
+		height: 0;
+		overflow: visible;
+	}
+
+	/* ---- Mobile: stack, diagram below copy ---- */
+	@media (max-width: 900px) {
+		.hero-grid {
+			grid-template-columns: 1fr;
+			gap: var(--space-8);
+		}
+
+		.hero-visual {
+			max-width: 24rem;
+		}
+	}
+</style>
