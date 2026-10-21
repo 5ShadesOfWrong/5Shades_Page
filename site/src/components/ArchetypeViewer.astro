@@ -46,8 +46,8 @@ const sceneFor = (a: Archetype) => ({
 	<div class="container">
 		<h2 id="archetypes-title" data-reveal>The 5(0) Shades of Wrong</h2>
 		<p class="intro" data-reveal data-reveal-delay="1">
-			Combining the three lenses yields six archetypes: the perfect explainer
-			(a) — and the five shades of wrong (b–f). Step through them one at a time.
+			Combining the three lenses yields six archetypes: the Perfect Explainer —
+			and the five Shades of Wrong. Step through them one at a time.
 		</p>
 
 		<ul class="legend" aria-label="Color legend from the paper" data-reveal data-reveal-delay="2">
@@ -75,7 +75,7 @@ const sceneFor = (a: Archetype) => ({
 								aria-hidden={i !== 0 ? 'true' : undefined}
 							>
 								<header class="head">
-									<span class="letter" aria-hidden="true">({a.letter})</span>
+
 									<h3>{a.name}</h3>
 									<span class:list={['verdict', a.verdict]}>
 										{a.verdict === 'correct' ? 'correct' : 'wrong'}
@@ -203,7 +203,7 @@ const sceneFor = (a: Archetype) => ({
 								type="button"
 								class:list={['dot-btn', { active: i === 0 }]}
 								data-viewer-dot={a.id}
-								aria-label={`Show archetype (${a.letter}) ${a.name}`}
+									aria-label={`Show archetype ${a.name}`}
 								aria-current={i === 0 ? 'true' : undefined}
 							/>
 						))
@@ -278,12 +278,6 @@ const sceneFor = (a: Archetype) => ({
 		display: flex;
 		align-items: center;
 		gap: var(--space-3);
-	}
-
-	.letter {
-		font-family: var(--font-mono);
-		color: var(--color-model);
-		font-size: var(--text-lg);
 	}
 
 	.verdict {

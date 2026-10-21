@@ -13,9 +13,9 @@
 		"scenarios": "#practice",
 		"contact": "mailto:authors@example.edu"
 	},
-	"authors": "Author One, Author Two, Author Three",
+	"authors": "Luca Deck, Anton Hummel, Paula Ziethmann, Katelyn Morrison, Philipp Spitzer and Niklas Kühl",
 	"license": "CC BY 4.0",
-	"bibtex": "@misc{shadesofwrong2026,\n  title     = {5(0) Shades of Wrong: Disentangling the Wrongness of AI Explanations},\n  author    = {Author One and Author Two and Author Three},\n  year      = {2026},\n  note      = {Companion site: Explanation Wrongness}\n}",
+	"bibtex": "@misc{shadesofwrong2026,\n  title     = {5(0) Shades of Wrong: Disentangling the Wrongness of AI Explanations},\n  author    = {Luca Deck and Anton Hummel and Paula Ziethmann and Katelyn Morrison and Philipp Spitzer and Niklas Kühl},\n  year      = {2026},\n  note      = {Companion site: Explanation Wrongness}\n}",
 	"tagline": {
 		"reader": "Scroll to learn: three lenses, six archetypes, thirteen scenarios.",
 		"presenter": "Present live: click-to-reveal cards, projection-ready sections."

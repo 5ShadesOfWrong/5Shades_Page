@@ -81,6 +81,8 @@ function joinBase(file: string): string {
 			<nav class="links" aria-label="Footer links">
 				<h3>Links</h3>
 				<ul>
+					<!-- Commented per user review 2026-10-21 (re-enable when the paper
+					     is published / a contact address exists):
 					<li>
 						{
 							site.paper.file ? (
@@ -94,8 +96,9 @@ function joinBase(file: string): string {
 							)
 						}
 					</li>
+					-->
 					<li><a href="#hero">Back to top</a></li>
-					<li><a href={site.links.contact}>Contact the authors</a></li>
+					<!-- <li><a href={site.links.contact}>Contact the authors</a></li> -->
 				</ul>
 			</nav>
 		</div>
@@ -139,9 +142,14 @@ function joinBase(file: string): string {
 	}
 
 	.logo-strip img {
-		height: 64px;
+		height: 80px;
 		width: auto;
 		object-fit: contain;
+		/* Light chip behind each logo so dark logo text stays readable —
+		   tinted toward the page indigo so it blends with the theme. */
+		background: color-mix(in srgb, white 90%, var(--color-bg));
+		padding: 12px 20px;
+		border-radius: var(--radius-md);
 	}
 
 	/* ---- Citation ---- */

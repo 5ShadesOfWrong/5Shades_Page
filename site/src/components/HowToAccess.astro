@@ -13,9 +13,6 @@
  */
 import site from '../data/site.json';
 
-// BASE_URL keeps the link correct when GitHub Pages serves from a subpath.
-const paperHref = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${site.paper.file.replace(/^\//, '')}`;
-
 const steps = [
 	{
 		number: 0,
@@ -83,12 +80,6 @@ const steps = [
 				))
 			}
 		</ol>
-
-		<p class="paper-link">
-			Prefer the source? <a href={paperHref} target="_blank" rel="noopener noreferrer"
-				>{site.paper.label}</a
-			>
-		</p>
 	</div>
 </section>
 

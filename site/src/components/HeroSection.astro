@@ -11,10 +11,7 @@
  */
 import site from '../data/site.json';
 import PresenterToggle from './PresenterToggle.astro';
-import PipelineDiagram from './PipelineDiagram.astro';
-
-// BASE_URL keeps the link correct when GitHub Pages serves from a subpath.
-const paperHref = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${site.paper.file.replace(/^\//, '')}`;
+import PipelineFlow from './PipelineFlow.astro';
 ---
 
 <section id="hero" class="section hero" aria-labelledby="hero-title">
@@ -28,19 +25,11 @@ const paperHref = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${site.paper.f
 				Based on the paper: {site.paper.title}
 			</p>
 
-			<div class="cta-row" data-reveal data-reveal-delay="4">
-				<a class="cta cta-primary" href={site.links.scenarios}>Try the scenarios</a>
-				<a class="cta cta-secondary" href={paperHref} target="_blank" rel="noopener noreferrer">
-					{site.paper.label}
-				</a>
-			</div>
-
-			<p class="tagline" data-reveal data-reveal-delay="5">{site.tagline.reader}</p>
+			<p class="tagline" data-reveal data-reveal-delay="4">{site.tagline.reader}</p>
 		</div>
 
-		<div class="hero-visual" data-reveal data-reveal-delay="3" aria-hidden="true">
-			<PipelineDiagram highlight="none" id="hero-diagram" showLabels={false} />
-			<p class="visual-caption">Explanation · AI Model · Ground Truth</p>
+		<div class="hero-visual" data-reveal data-reveal-delay="3">
+			<PipelineFlow />
 		</div>
 	</div>
 
@@ -59,14 +48,19 @@ const paperHref = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${site.paper.f
 		position: relative;
 	}
 
-	/* Two-column hero: copy left, diagram right — uses the horizontal space
-	   instead of a narrow centered column (user review 2026-10-19). */
+	/* Stacked hero: copy on top (centered), full-width diagram below.
+	   The PipelineFlow needs horizontal room for its callout boxes. */
 	.hero-grid {
 		display: grid;
-		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-		gap: var(--space-16);
-		align-items: center;
+		gap: var(--space-12);
 		width: 100%;
+	}
+
+	.hero-copy {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 
 	.kicker {
@@ -101,70 +95,15 @@ const paperHref = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${site.paper.f
 		max-width: 44ch;
 	}
 
-	.cta-row {
-		margin-top: var(--space-8);
-		display: flex;
-		gap: var(--space-4);
-		flex-wrap: wrap;
-	}
-
-	.cta {
-		display: inline-flex;
-		align-items: center;
-		padding: var(--space-3) var(--space-6);
-		border-radius: var(--radius-md);
-		font-weight: 600;
-		text-decoration: none;
-		transition: transform var(--duration-fast) var(--ease-out),
-			background var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out),
-			box-shadow var(--duration-fast) var(--ease-out);
-	}
-
-	.cta:hover {
-		transform: translateY(-2px);
-	}
-
-	.cta-primary {
-		background: var(--color-model);
-		color: var(--color-bg-deep);
-		box-shadow: 0 4px 20px rgb(179 155 255 / 0.35);
-	}
-
-	.cta-primary:hover {
-		background: color-mix(in srgb, var(--color-model) 85%, white);
-		box-shadow: 0 6px 28px rgb(179 155 255 / 0.5);
-	}
-
-	.cta-secondary {
-		border: 1px solid var(--color-border);
-		color: var(--color-text);
-		background: transparent;
-	}
-
-	.cta-secondary:hover {
-		border-color: var(--color-model);
-	}
-
 	.tagline {
 		margin-top: var(--space-8);
 		color: var(--color-text-faint);
 		font-size: var(--text-sm);
 	}
 
-	/* ---- Right column: live diagram ---- */
+	/* ---- Full-width diagram below the copy ---- */
 	.hero-visual {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-3);
-	}
-
-	.visual-caption {
-		text-align: center;
-		font-family: var(--font-mono);
-		font-size: var(--text-xs);
-		color: var(--color-text-faint);
-		letter-spacing: 0.08em;
+		width: 100%;
 	}
 
 	/*
@@ -181,12 +120,7 @@ const paperHref = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${site.paper.f
 	/* ---- Mobile: stack, diagram below copy ---- */
 	@media (max-width: 900px) {
 		.hero-grid {
-			grid-template-columns: 1fr;
 			gap: var(--space-8);
-		}
-
-		.hero-visual {
-			max-width: 24rem;
 		}
 	}
 </style>
