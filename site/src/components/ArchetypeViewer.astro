@@ -32,6 +32,53 @@ const legend = data.legend;
  */
 const WOLF_MASK = 'icons/wolf-mask.png';
 
+/**
+ * Panel feature states from the explicit scene data (archetypes.json):
+ *   Prediction panel  → `used` flags (purple = what the model actually used)
+ *   Explanation panel → `highlight` flags (green when honest, red when misleading)
+ * A highlight is HONEST when it points at the same feature the model used.
+ */
+function panelState(
+	scene: NonNullable<Archetype['scene']>,
+	kind: 'prediction' | 'explanation'
+) {
+	const flags = kind === 'prediction' ? scene.used : scene.highlight;
+	const honest =
+		flags.wolf === scene.used.wolf &&
+		flags.sky === scene.used.sky &&
+		flags.leftMoon === scene.used.leftMoon &&
+		flags.rightMoon === scene.used.rightMoon;
+
+	const moonCls =
+		kind === 'prediction'
+			? { 'feat-used': flags.leftMoon || flags.rightMoon, 'feat-dim': !(flags.leftMoon || flags.rightMoon) }
+			: {
+					'feat-hl-good': (flags.leftMoon || flags.rightMoon) && honest,
+					'feat-hl-bad': (flags.leftMoon || flags.rightMoon) && !honest,
+					'feat-dim': !(flags.leftMoon || flags.rightMoon),
+				};
+
+	return {
+		skyCls:
+			kind === 'prediction'
+				? { 'feat-used': flags.sky, 'feat-dim': !flags.sky }
+				: {
+						'feat-hl-good': flags.sky && honest,
+						'feat-hl-bad': flags.sky && !honest,
+						'feat-dim': !flags.sky,
+					},
+		moonCls,
+		wolfCls:
+			kind === 'prediction'
+				? { 'feat-used': flags.wolf, 'feat-dim': !flags.wolf }
+				: {
+						'feat-hl-good': flags.wolf && honest,
+						'feat-hl-bad': flags.wolf && !honest,
+						'feat-dim': !flags.wolf,
+					},
+	};
+}
+
 // Ground strip shared by both panels.
 const GROUND_PATH = 'M0 152 Q 60 138 120 150 T 240 146 L 240 200 L 0 200 Z';
 
@@ -41,31 +88,8 @@ const GROUND_PATH = 'M0 152 Q 60 138 120 150 T 240 146 L 240 200 L 0 200 Z';
 //                       highlight is honest (same feature the model used),
 //                       RED when it is misleading.
 //   Everything not used/highlighted in a panel is dimmed (unimportant).
-const sceneFor = (a: Archetype) => {
-	const usedIsShape = a.modelUsed.startsWith('shape');
-	const usedIsMoons = a.modelUsed.includes('moon');
-	const usedIsBackground = a.modelUsed.includes('background');
-	const highlightIsShape = a.highlighted.startsWith('shape');
-	const highlightIsMoons = a.highlighted.includes('moon');
-	const highlightIsBackground = a.highlighted.includes('background');
-	// Honest highlight = the explanation points at the same feature the model used.
-	const honest =
-		(highlightIsShape && usedIsShape) ||
-		((highlightIsMoons || highlightIsBackground) && (usedIsMoons || usedIsBackground));
-	// The prediction word turns red when it disagrees with the explanation's claim.
-	const predictionMatches = a.explanation.toLowerCase().includes(a.prediction.toLowerCase());
-	return {
-		usedIsShape,
-		usedIsMoons,
-		usedIsBackground,
-		highlightIsShape,
-		highlightIsMoons,
-		highlightIsBackground,
-		honest,
-		predictionMatches,
-		animal: a.prediction.toLowerCase(),
-	};
-};
+//   (The old string-parsing sceneFor was replaced by explicit per-archetype
+//    scene data in archetypes.json + panelState() above — user spec 2026-10-21.)
 ---
 
 <section id="archetypes" class="section" aria-labelledby="archetypes-title">
@@ -91,7 +115,10 @@ const sceneFor = (a: Archetype) => {
 			<div class="stage" data-viewer-stage>
 				{
 					list.map((a) => {
-						const scene = sceneFor(a);
+						if (!a.scene) return null; // schema guarantees scene data
+						// Explanation-panel honesty, computed once per archetype —
+						// used by the story column (outside the panel loop below).
+						const explanationHonest = panelState(a.scene, 'explanation').honest;
 						return (
 							<article
 								class:list={['archetype', { correct: a.verdict === 'correct' }]}
@@ -114,31 +141,17 @@ const sceneFor = (a: Archetype) => {
 										{ kind: 'explanation' as const },
 									].map((panel) => {
 										const isPred = panel.kind === 'prediction';
-										const skyCls = isPred
-											? { 'sky-used': scene.usedIsBackground }
-											: {
-													'sky-hl-good': scene.highlightIsBackground && scene.honest,
-													'sky-hl-bad': scene.highlightIsBackground && !scene.honest,
-												};
-										const moonCls = isPred
-											? {
-													'feat-used': scene.usedIsMoons || scene.usedIsBackground,
-													'feat-dim': !(scene.usedIsMoons || scene.usedIsBackground),
-												}
-											: {
-													'feat-hl-good':
-														(scene.highlightIsMoons || scene.highlightIsBackground) && scene.honest,
-													'feat-hl-bad':
-														(scene.highlightIsMoons || scene.highlightIsBackground) && !scene.honest,
-													'feat-dim': !(scene.highlightIsMoons || scene.highlightIsBackground),
-												};
-										const wolfCls = isPred
-											? { 'feat-used': scene.usedIsShape, 'feat-dim': !scene.usedIsShape }
-											: {
-													'feat-hl-good': scene.highlightIsShape && scene.honest,
-													'feat-hl-bad': scene.highlightIsShape && !scene.honest,
-													'feat-dim': !scene.highlightIsShape,
-												};
+										const state = panelState(a.scene, panel.kind);
+										// Moon count per archetype (1 everywhere except the
+										// Confused Illuminator + Hallucinator, which have 2).
+										const moonCount = a.scene.moons;
+										const moonPositions =
+											moonCount === 2
+												? [
+														{ cx: 34, cy: 30, r: 14, key: 'leftMoon' },
+														{ cx: 206, cy: 30, r: 14, key: 'rightMoon' },
+													]
+												: [{ cx: 120, cy: 30, r: 14, key: 'leftMoon' }];
 										return (
 											<figure class="scene-figure">
 												<div class="scene">
@@ -148,28 +161,38 @@ const sceneFor = (a: Archetype) => {
 														aria-label={
 															isPred
 																? `Prediction scene: the model actually used the ${a.modelUsed} (purple).`
-																: `Explanation scene: the explanation highlights the ${a.highlighted} (${scene.honest ? 'green — honest' : 'red — misleading'}).`
+																: `Explanation scene: the explanation highlights the ${a.highlighted} (${state.honest ? 'green — honest' : 'red — misleading'}).`
 														}
 													>
-														<rect x="0" y="0" width="240" height="200" rx="12" class:list={['sky', skyCls]} />
-														<g class:list={['moon', moonCls]}>
-															<circle cx="34" cy="30" r="14" class="moon-disc" />
-															<circle cx="29" cy="25" r="3.5" class="crater" />
-															<circle cx="39" cy="34" r="2.5" class="crater" />
-															<circle cx="36" cy="24" r="2" class="crater" />
-														</g>
-														<g class:list={['moon', moonCls]}>
-															<circle cx="206" cy="30" r="14" class="moon-disc" />
-															<circle cx="201" cy="25" r="3.5" class="crater" />
-															<circle cx="211" cy="34" r="2.5" class="crater" />
-															<circle cx="208" cy="24" r="2" class="crater" />
-														</g>
+														<rect x="0" y="0" width="240" height="200" rx="12" class:list={['sky', state.skyCls]} />
+														{moonPositions.map((m) => {
+															// Each moon is colored independently: the flags
+															// leftMoon/rightMoon decide per position.
+															const active = isPred
+																? a.scene.used[m.key]
+																: a.scene.highlight[m.key];
+															const cls = isPred
+																? { 'feat-used': active, 'feat-dim': !active }
+																: {
+																		'feat-hl-good': active && state.honest,
+																		'feat-hl-bad': active && !state.honest,
+																		'feat-dim': !active,
+																	};
+															return (
+																<g class:list={['moon', cls]}>
+																	<circle cx={m.cx} cy={m.cy} r={m.r} class="moon-disc" />
+																	<circle cx={m.cx - 5} cy={m.cy - 5} r="3.5" class="crater" />
+																	<circle cx={m.cx + 5} cy={m.cy + 4} r="2.5" class="crater" />
+																	<circle cx={m.cx + 2} cy={m.cy - 6} r="2" class="crater" />
+																</g>
+															);
+														})}
 														<path d={GROUND_PATH} class="ground" />
 													</svg>
 													{/* Wolf layer — HTML sibling of the SVG (a <span> inside <svg>
 													    is invalid and breaks out of the panel). */}
 													<span
-														class:list={['wolf', wolfCls]}
+														class:list={['wolf', state.wolfCls]}
 														style={`-webkit-mask-image: url(${import.meta.env.BASE_URL.replace(/\/$/, '')}/${WOLF_MASK}); mask-image: url(${import.meta.env.BASE_URL.replace(/\/$/, '')}/${WOLF_MASK});`}
 														aria-hidden="true"
 													/>
@@ -178,7 +201,7 @@ const sceneFor = (a: Archetype) => {
 													{isPred ? (
 														<>
 															Prediction:{' '}
-															<strong class:list={[scene.predictionMatches ? 'ok' : 'bad']}>
+															<strong class:list={[state.honest ? 'ok' : 'bad']}>
 																{a.prediction}
 															</strong>
 														</>
@@ -203,7 +226,7 @@ const sceneFor = (a: Archetype) => {
 											</div>
 											<div>
 												<dt>Explanation highlighted</dt>
-												<dd class:list={['highlighted', { bad: !scene.honest }]}>{a.highlighted}</dd>
+												<dd class:list={['highlighted', { bad: !explanationHonest }]}>{a.highlighted}</dd>
 											</div>
 										</dl>
 
@@ -381,22 +404,24 @@ const sceneFor = (a: Archetype) => {
 		transition: fill var(--duration-normal) var(--ease-out);
 	}
 
-	/* Background used/highlighted → tint the whole sky (paper-style) */
-	.sky-used {
+	/* Background used/highlighted → tint the whole sky (paper-style).
+	   NOTE: panelState() emits feat-* classes (same system as moons/wolf). */
+	.sky.feat-used {
 		fill: color-mix(in srgb, var(--color-model) 30%, var(--color-bg-overlay));
 	}
 
-	.sky-hl-good {
+	.sky.feat-hl-good {
 		fill: color-mix(in srgb, var(--color-positive) 30%, var(--color-bg-overlay));
 	}
 
-	.sky-hl-bad {
+	.sky.feat-hl-bad {
 		fill: color-mix(in srgb, var(--color-negative) 30%, var(--color-bg-overlay));
 	}
 
 	.moon .moon-disc {
-		fill: var(--color-neutral);
-		opacity: 0.45;
+		/* Unused features are painted BLACK (user review 2026-10-21) */
+		fill: #000000;
+		opacity: 1;
 		transition: fill var(--duration-normal) var(--ease-out),
 			opacity var(--duration-normal) var(--ease-out);
 	}
@@ -407,24 +432,22 @@ const sceneFor = (a: Archetype) => {
 	}
 
 	/* Feature states (paper legend): purple = used, green = honest highlight,
-	   red = misleading highlight, dim = unimportant */
-	.moon .feat-used {
+	   red = misleading highlight, black = unused/unimportant.
+	   NOTE: the state class sits ON the <g class="moon"> element (compound
+	   selector `.moon.feat-x`), styling the .moon-disc inside it. */
+	.moon.feat-used .moon-disc {
 		fill: var(--color-model);
 		opacity: 1;
 	}
 
-	.moon .feat-hl-good {
+	.moon.feat-hl-good .moon-disc {
 		fill: var(--color-positive);
 		opacity: 1;
 	}
 
-	.moon .feat-hl-bad {
+	.moon.feat-hl-bad .moon-disc {
 		fill: var(--color-negative);
 		opacity: 1;
-	}
-
-	.moon .feat-dim {
-		opacity: 0.45;
 	}
 
 	.ground {
@@ -440,8 +463,9 @@ const sceneFor = (a: Archetype) => {
 		transform: translateX(-50%);
 		width: 62%; /* fits inside the panel, above the ground strip */
 		aspect-ratio: 1 / 1;
-		background-color: var(--color-neutral);
-		opacity: 0.55;
+		/* Unused feature → painted black (user review 2026-10-21) */
+		background-color: #000000;
+		opacity: 1;
 		mask-size: contain;
 		mask-repeat: no-repeat;
 		mask-position: center bottom;

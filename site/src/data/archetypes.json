@@ -1,9 +1,18 @@
 {
 	"$comment": "archetypes.json — the Perfect Explainer + 5 Shades of Wrong. Source: paper p.9 and p.29 (husky/wolf figure). Colors reference the paper legend: purple=model-used, green/red=highlighted, gray=unimportant.",
 	"legend": {
-		"used": { "label": "Actually used features", "color": "var(--color-model)" },
-		"highlighted": { "label": "Highlighted features", "color": "var(--color-positive)" },
-		"unimportant": { "label": "Unimportant features", "color": "var(--color-neutral)" }
+		"used": {
+			"label": "Actually used features",
+			"color": "var(--color-model)"
+		},
+		"highlighted": {
+			"label": "Highlighted features",
+			"color": "var(--color-positive)"
+		},
+		"unimportant": {
+			"label": "Unimportant features",
+			"color": "var(--color-neutral)"
+		}
 	},
 	"archetypes": [
 		{
@@ -18,7 +27,22 @@
 			"highlighted": "shape",
 			"coherent": true,
 			"valid": true,
-			"faithful": true
+			"faithful": true,
+			"scene": {
+				"moons": 1,
+				"used": {
+					"wolf": true,
+					"sky": false,
+					"leftMoon": false,
+					"rightMoon": false
+				},
+				"highlight": {
+					"wolf": true,
+					"sky": false,
+					"leftMoon": false,
+					"rightMoon": false
+				}
+			}
 		},
 		{
 			"id": "perfect-liar",
@@ -28,11 +52,26 @@
 			"summary": "The explanation is coherent and valid on its face, but completely unfaithful: it hides what the model really used.",
 			"prediction": "Wolf",
 			"explanation": "The image shows a wolf because of the shape.",
-			"modelUsed": "background (moon)",
+			"modelUsed": "background",
 			"highlighted": "shape",
 			"coherent": true,
 			"valid": true,
-			"faithful": false
+			"faithful": false,
+			"scene": {
+				"moons": 1,
+				"used": {
+					"wolf": false,
+					"sky": true,
+					"leftMoon": false,
+					"rightMoon": false
+				},
+				"highlight": {
+					"wolf": true,
+					"sky": false,
+					"leftMoon": false,
+					"rightMoon": false
+				}
+			}
 		},
 		{
 			"id": "illuminator",
@@ -42,11 +81,26 @@
 			"summary": "The explanation faithfully shows what the model used — but what the model used is the wrong reason (spurious correlation).",
 			"prediction": "Husky",
 			"explanation": "The image shows a husky because of the background.",
-			"modelUsed": "background (moon)",
+			"modelUsed": "background",
 			"highlighted": "background",
 			"coherent": true,
 			"valid": false,
-			"faithful": true
+			"faithful": true,
+			"scene": {
+				"moons": 1,
+				"used": {
+					"wolf": false,
+					"sky": true,
+					"leftMoon": false,
+					"rightMoon": false
+				},
+				"highlight": {
+					"wolf": false,
+					"sky": true,
+					"leftMoon": false,
+					"rightMoon": false
+				}
+			}
 		},
 		{
 			"id": "confused-illuminator",
@@ -56,11 +110,26 @@
 			"summary": "The model used the wrong reason, and the explanation highlights something else entirely — wrong on both counts.",
 			"prediction": "Husky",
 			"explanation": "The image shows a husky because of the 2 moons.",
-			"modelUsed": "background (moon)",
+			"modelUsed": "background",
 			"highlighted": "2 moons",
 			"coherent": true,
 			"valid": false,
-			"faithful": false
+			"faithful": false,
+			"scene": {
+				"moons": 2,
+				"used": {
+					"wolf": false,
+					"sky": false,
+					"leftMoon": true,
+					"rightMoon": false
+				},
+				"highlight": {
+					"wolf": false,
+					"sky": false,
+					"leftMoon": true,
+					"rightMoon": true
+				}
+			}
 		},
 		{
 			"id": "storyteller",
@@ -74,7 +143,22 @@
 			"highlighted": "background",
 			"coherent": true,
 			"valid": false,
-			"faithful": false
+			"faithful": false,
+			"scene": {
+				"moons": 1,
+				"used": {
+					"wolf": false,
+					"sky": false,
+					"leftMoon": false,
+					"rightMoon": false
+				},
+				"highlight": {
+					"wolf": false,
+					"sky": true,
+					"leftMoon": false,
+					"rightMoon": false
+				}
+			}
 		},
 		{
 			"id": "hallucinator",
@@ -88,7 +172,22 @@
 			"highlighted": "2 moons",
 			"coherent": false,
 			"valid": false,
-			"faithful": false
+			"faithful": false,
+			"scene": {
+				"moons": 2,
+				"used": {
+					"wolf": true,
+					"sky": false,
+					"leftMoon": false,
+					"rightMoon": false
+				},
+				"highlight": {
+					"wolf": false,
+					"sky": false,
+					"leftMoon": true,
+					"rightMoon": true
+				}
+			}
 		}
 	]
 }

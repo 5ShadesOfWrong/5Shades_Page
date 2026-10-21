@@ -78,6 +78,15 @@ export interface ArchetypeLegendItem {
 	color: string;
 }
 
+export interface ArchetypeScene {
+	/** How many moons appear in the scene (1, or 2 for Confused Illuminator / Hallucinator). */
+	moons: 1 | 2;
+	/** Features the model ACTUALLY used (purple, Prediction panel). */
+	used: { wolf: boolean; sky: boolean; leftMoon: boolean; rightMoon: boolean };
+	/** Features the explanation highlights (green/red, Explanation panel). */
+	highlight: { wolf: boolean; sky: boolean; leftMoon: boolean; rightMoon: boolean };
+}
+
 export interface Archetype {
 	id: string;
 	/** Paper letter (a)–(f). */
@@ -89,6 +98,8 @@ export interface Archetype {
 	explanation: string;
 	modelUsed: string;
 	highlighted: string;
+	/** Explicit scene semantics for the two panels (user spec 2026-10-21). */
+	scene: ArchetypeScene;
 	coherent: boolean;
 	valid: boolean;
 	faithful: boolean;
