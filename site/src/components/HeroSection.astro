@@ -3,14 +3,12 @@
  * HeroSection.astro — §0 Hero (DESIGN_PLAN §4)
  * --------------------------------------------
  * Title "Explanation Wrongness" (user decision, 2026-10-19), the paper's
- * subtitle as the hook question, CTAs (paper PDF / scenarios), and the
- * presenter-mode toggle.
+ * subtitle as the hook question, and the paper reference.
  *
  * Content comes from site.json (single source of truth).
  * Security: static data from a typed JSON import; auto-escaped by Astro.
  */
 import site from '../data/site.json';
-import PresenterToggle from './PresenterToggle.astro';
 import PipelineFlow from './PipelineFlow.astro';
 ---
 
@@ -31,11 +29,6 @@ import PipelineFlow from './PipelineFlow.astro';
 		<div class="hero-visual" data-reveal data-reveal-delay="3">
 			<PipelineFlow />
 		</div>
-	</div>
-
-	<!-- Presenter toggle lives in the hero on desktop; fixed position via its own styles -->
-	<div class="hero-toggle">
-		<PresenterToggle />
 	</div>
 </section>
 
@@ -104,17 +97,6 @@ import PipelineFlow from './PipelineFlow.astro';
 	/* ---- Full-width diagram below the copy ---- */
 	.hero-visual {
 		width: 100%;
-	}
-
-	/*
-	 * The PresenterToggle component is position:fixed by its own styles;
-	 * this wrapper only reserves layout space in the hero flow.
-	 */
-	.hero-toggle {
-		position: absolute;
-		width: 0;
-		height: 0;
-		overflow: visible;
 	}
 
 	/* ---- Mobile: stack, diagram below copy ---- */
