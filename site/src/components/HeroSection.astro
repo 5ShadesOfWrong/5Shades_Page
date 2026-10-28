@@ -1,0 +1,30 @@
+---
+import './HeroSection.css';
+import site from '../data/site.json';
+import PipelineFlow from './PipelineFlow.astro';
+
+/**
+ * HeroSection.astro — §0 Hero (DESIGN_PLAN §4)
+ * -----------------------------------------
+ * Title "Explanation Wrongness" (user decision, 2026-10-19), the paper's
+ * subtitle as the hook question, and the paper reference.
+ *
+ * Content comes from site.json (single source of truth).
+ * Security: static data from a typed JSON import; auto-escaped by Astro.
+ */
+---
+
+<section id="hero" class="section hero" aria-labelledby="hero-title">
+	<div class="container hero-grid">
+		<div class="hero-copy">
+			<h1 id="hero-title" data-reveal data-reveal-delay="1">{site.title}</h1>
+			<p class="lede" data-reveal data-reveal-delay="2">{site.subtitle}</p>
+		</div>
+
+		<div class="hero-visual" data-reveal data-reveal-delay="3">
+			<PipelineFlow />
+		</div>
+	</div>
+</section>
+
+

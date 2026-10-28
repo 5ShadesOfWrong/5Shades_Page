@@ -1,0 +1,58 @@
+---
+/**
+ * index.astro — the one page
+ * --------------------------
+ * Assembles the page sections in DESIGN_PLAN §4 order:
+ *   §0 Hero → §1 How to Access → §2 Three Lenses → §3 Archetypes
+ *   → §4 Workflow → §5 Practice → §6 Takeaway → §7 Footer
+ *
+ * User review 2026-10-19:
+ *   - ArchetypeGallery replaced by ArchetypeViewer (one at a time).
+ *   - AssessmentWorkflow + Takeaway are COMMENTED OUT for now (may return).
+ *
+ * Security: static markup + typed data imports; no dynamic HTML injection.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavRail from '../components/NavRail.astro';
+import LandingHero from '../components/LandingHero.astro';
+import HeroSection from '../components/HeroSection.astro';
+import HowToAccess from '../components/HowToAccess.astro';
+import ThreeLenses from '../components/ThreeLenses.astro';
+import ArchetypeViewer from '../components/ArchetypeViewer.astro';
+// import AssessmentWorkflow from '../components/AssessmentWorkflow.astro'; // commented per user review (may return)
+// import ScenarioPractice from '../components/ScenarioPractice.astro'; // commented per user review 2026-10-21 (will return later)
+// import Takeaway from '../components/Takeaway.astro'; // commented per user review (may return)
+import SiteFooter from '../components/SiteFooter.astro';
+
+// Section registry — drives the NavRail and keeps ids consistent.
+// ids are deep-link anchors used by presenters mid-talk (DESIGN_PLAN §4).
+const sections = [
+	{ id: 'landing', label: '5 Shades of Wrong' },
+	{ id: 'hero', label: 'Introduction' },
+	{ id: 'how-to-access', label: 'How to Assess' },
+	{ id: 'three-lenses', label: 'Three Lenses' },
+	{ id: 'archetypes', label: '5(0) Shades of Wrong' },
+	// { id: 'workflow', label: 'Assessment Workflow' }, // commented per user review
+	// { id: 'practice', label: 'Practice Scenarios' }, // commented per user review 2026-10-21
+	// { id: 'takeaway', label: 'Takeaway' }, // commented per user review
+	{ id: 'footer', label: 'Cite & Explore' },
+] as const;
+
+const DESCRIPTION =
+	'5 Shades of Wrong — a common language on wrong AI explanations. A scroll-driven companion to the paper: Coherence, Validity, Faithfulness, and the five shades of wrong.';
+---
+
+<BaseLayout title="Home" description={DESCRIPTION}>
+	<NavRail sections={sections} slot="global-nav" />
+
+	<LandingHero />
+	<HeroSection />
+	<HowToAccess />
+	<ThreeLenses />
+	<ArchetypeViewer />
+	<!-- <AssessmentWorkflow /> — commented per user review 2026-10-19 (may return) -->
+	<!-- <ScenarioPractice /> — commented per user review 2026-10-21 (will return later) -->
+	<!-- <Takeaway /> — commented per user review 2026-10-19 (may return) -->
+	<SiteFooter />
+</BaseLayout>
+

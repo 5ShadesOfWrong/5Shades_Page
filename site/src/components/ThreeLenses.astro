@@ -1,0 +1,34 @@
+---
+import './ThreeLenses.css';
+import lenses from '../data/lenses.json';
+import LensCard from './LensCard.astro';
+import type { LensesData } from '../schemas/schemas';
+
+
+const lensList = (lenses as unknown as LensesData).lenses;
+/**
+ * ThreeLenses.astro — §2 The Three Lenses (user review 2026-10-21)
+ * --------------------------------------------------------------
+ * Intro copy + one LensCard per lens from lenses.json, laid out in three
+ * equal columns (no diagram — the pipeline lives in the hero now).
+ *
+ * Security: data from typed JSON; auto-escaped rendering.
+ */
+---
+
+<section id="three-lenses" class="section" aria-labelledby="lenses-title">
+	<div class="container">
+		<h2 id="lenses-title" data-reveal>The Three Lenses</h2>
+		<p class="intro" data-reveal data-reveal-delay="1">
+			An explanation can be judged against three reference points — each one a
+			different way of being wrong. Usually you can only observe the explanation
+			itself, so start there and work outward.
+		</p>
+
+		<div class="lens-cards">
+			{ lensList.map((lens, i) => <div data-reveal data-reveal-delay={i}><LensCard lens={lens} /></div>) }
+		</div>
+	</div>
+</section>
+
+

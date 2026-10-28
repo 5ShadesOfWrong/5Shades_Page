@@ -1,0 +1,121 @@
+/* Styles for SiteFooter.astro — extracted per review 2026-10-26 */
+
+	.footer {
+		border-top: 1px solid var(--color-border);
+		padding-block: var(--space-16);
+	}
+
+	.footer-grid {
+		margin-top: var(--space-8);
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+		gap: var(--space-12);
+	}
+
+	h3 {
+		font-size: var(--text-sm);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--color-text-faint);
+	}
+
+	/* ---- Partner logo strip ---- */
+	/* Logos are shown exactly as authored — no filter, no card box
+	   (user review 2026-10-21: colors/text must stay untouched). */
+	.logo-strip {
+		margin-top: var(--space-8);
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-10, 3rem);
+	}
+
+	.logo-strip img {
+		height: 80px;
+		width: auto;
+		object-fit: contain;
+		/* Light chip behind each logo so dark logo text stays readable —
+		   tinted toward the page indigo so it blends with the theme. */
+		background: color-mix(in srgb, white 90%, var(--color-bg));
+		padding: 12px 20px;
+		border-radius: var(--radius-md);
+	}
+
+	/* ---- Citation ---- */
+	.authors {
+		margin-top: var(--space-3);
+		font-weight: 600;
+	}
+
+	.paper-title {
+		color: var(--color-text-muted);
+	}
+
+	.paper-venue {
+		color: var(--color-text-faint);
+		font-size: var(--text-sm);
+	}
+
+	.link-disabled {
+		color: var(--color-text-faint);
+	}
+
+	.bibtex {
+		margin-top: var(--space-4);
+	}
+
+	.bibtex summary {
+		cursor: pointer;
+		color: var(--color-link);
+		font-weight: 600;
+	}
+
+	.bibtex pre {
+		margin-top: var(--space-3);
+		padding: var(--space-4);
+		background: var(--color-bg-overlay);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		font-size: var(--text-sm);
+		overflow-x: auto;
+		white-space: pre-wrap;
+	}
+
+	.copy-btn {
+		margin-top: var(--space-3);
+		padding: var(--space-2) var(--space-4);
+		background: transparent;
+		color: var(--color-link);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		font-size: var(--text-sm);
+		cursor: pointer;
+		transition: border-color var(--duration-fast) var(--ease-out);
+	}
+
+	.copy-btn:hover {
+		border-color: var(--color-link);
+	}
+
+	.copy-status {
+		margin-left: var(--space-3);
+		font-size: var(--text-sm);
+		color: var(--color-positive);
+	}
+
+	/* ---- Links ---- */
+	.links ul {
+		margin-top: var(--space-3);
+		padding: 0;
+		list-style: none;
+		display: grid;
+		gap: var(--space-2);
+	}
+
+	.colophon {
+		margin-top: var(--space-16);
+		padding-top: var(--space-6);
+		border-top: 1px solid var(--color-border);
+		color: var(--color-text-faint);
+		font-size: var(--text-sm);
+	}

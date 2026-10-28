@@ -1,0 +1,126 @@
+---
+import './LandingHero.css';
+import site from '../data/site.json';
+import archetypes from '../data/archetypes.json';
+import ScenePanel from './ScenePanel.astro';
+import type { Archetype, ArchetypesData } from '../schemas/schemas';
+
+/**
+ * LandingHero.astro — first section (user review 2026-10-28)
+ * -----------------------------------------------------------
+ * Brand headline + shade chips as before. The Perfect Explainer — which
+ * left the 5 Shades viewer — now lives in the BACKGROUND: a large, greyed
+ * watermark of its ground-truth scene on the right, behind the text
+ * (decorative only: aria-hidden, no pointer events).
+ *
+ * Security: static content from typed JSON; auto-escaped.
+ */
+
+// The five shades, in paper order — text-only chips. The Perfect Explainer
+// is NOT listed: it lives in the hero backdrop (see below).
+const shades = [
+	'Perfect Liar',
+	'Illuminator',
+	'Cassandra',
+	'Storyteller',
+	'Hallucinator',
+];
+
+// The Perfect Explainer — same typed data the viewer uses.
+const data = archetypes as unknown as ArchetypesData;
+const perfect = data.archetypes.find((a) => a.id === 'perfect-explainer') as Archetype;
+---
+
+<section id="landing" class="section landing" aria-labelledby="landing-title">
+	{
+		perfect?.scene && (
+			<div class="hero-backdrop">
+				{/* One scene at a time: Ground Truth → Prediction → Explanation.
+				    The arrow advances; question + caption change with each step.
+				    The scene stays greyed so the headline keeps the spotlight, but
+				    the texts and arrow use the section's normal colors. Step 1 also
+				    carries a "Ground truth" tag on the image's top-right corner. */}
+				<div class="backdrop-stage" data-backdrop-stage>
+					{[
+						{
+							kind: 'groundtruth' as const,
+							question: 'What is the perfect explainer?',
+							tag: 'Ground truth',
+							caption:
+								'The image shows a wolf. It is possible to identify it by the shape of the body — the ears, the snout, the posture.',
+							label: 'Ground truth scene: the untouched image — it truly shows a wolf.',
+						},
+						{
+							kind: 'prediction' as const,
+							question: 'What is the perfect explainer?',
+							tag: 'Prediction',
+							caption:
+								'In the perfect explainer, the model uses the shape of the animal as the feature and predicts that it is a wolf.',
+							label: 'Prediction scene: the model actually used the shape (purple).',
+						},
+						{
+							kind: 'explanation' as const,
+							question: 'What is the perfect explainer?',
+							tag: 'Explanation',
+							caption:
+								'In the perfect explainer, the explanation highlights the shape too, giving the same reason as the model — nothing hidden, nothing invented.',
+							label: 'Explanation scene: the explanation highlights the shape (green — honest).',
+						},
+					].map((step, i) => (
+						<div class="backdrop-step" hidden={i !== 0} data-backdrop-step>
+							<p class="backdrop-question">{step.question}</p>
+							<div class="backdrop-frame">
+								<ScenePanel kind={step.kind} scene={perfect.scene} label={step.label} bare />
+								<span class="backdrop-tag" data-tag={step.kind}>
+									{step.tag}
+								</span>
+							</div>
+							<p class="backdrop-caption">{step.caption}</p>
+						</div>
+					))}
+				</div>
+				<button type="button" class="backdrop-next" data-backdrop-next aria-label="Next step">
+					→
+				</button>
+			</div>
+		)
+	}
+	<div class="container">
+		<h1 id="landing-title" data-reveal data-reveal-delay="1">{site.landing.title}</h1>
+		<p class="lede" data-reveal data-reveal-delay="2">{site.landing.subtitle}</p>
+
+		<ul class="shades" data-reveal data-reveal-delay="3" aria-label="The five shades of wrong">
+			{
+				shades.map((name, i) => (
+					<li class="shade-chip" data-reveal data-reveal-delay={3 + i}>
+						<span class="shade-index" aria-hidden="true">{i + 1}</span>
+						{name}
+					</li>
+				))
+			}
+		</ul>
+
+		<p class="scroll-hint" data-reveal data-reveal-delay="9">Scroll to explore ↓</p>
+	</div>
+</section>
+
+<script>
+	// Hero backdrop step-through: cycles Ground Truth → Prediction →
+	// Explanation. Attribute-scoped so it only touches this card; the arrow
+	// advances, question + caption swap with the scene. No dynamic HTML.
+	const stage = document.querySelector('[data-backdrop-stage]');
+	if (stage) {
+		const steps = Array.from(stage.querySelectorAll<HTMLElement>('[data-backdrop-step]'));
+		const next = stage.parentElement?.querySelector<HTMLButtonElement>('[data-backdrop-next]');
+		let index = 0;
+
+		const show = (n: number) => {
+			index = (n + steps.length) % steps.length;
+			steps.forEach((s, i) => (s.hidden = i !== index));
+		};
+
+		next?.addEventListener('click', () => show(index + 1));
+	}
+</script>
+
+

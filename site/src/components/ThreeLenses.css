@@ -1,0 +1,25 @@
+/* Styles for ThreeLenses.astro — extracted per review 2026-10-26 */
+
+	.intro {
+		margin-top: var(--space-4);
+		font-size: var(--text-lg);
+		color: var(--color-text-muted);
+		max-width: 56ch;
+	}
+
+	/* ---- Three equal columns: better screen division, shorter page ---- */
+	.lens-cards {
+		margin-top: var(--space-8);
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-6);
+		align-items: start;
+	}
+
+	/* ---- Mobile/tablet: stack ---- */
+	@media (max-width: 1000px) {
+		.lens-cards {
+			grid-template-columns: 1fr;
+			max-width: 44rem;
+		}
+	}

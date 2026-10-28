@@ -1,0 +1,66 @@
+/* Styles for HeroSection.astro — extracted per review 2026-10-26 */
+
+	.hero {
+		min-height: 92vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		position: relative;
+	}
+
+	/* Stacked hero: copy on top (centered), full-width diagram below.
+	   The PipelineFlow needs horizontal room for its callout boxes. */
+	.hero-grid {
+		display: grid;
+		gap: var(--space-12);
+		width: 100%;
+	}
+
+	.hero-copy {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.kicker {
+		color: var(--color-model);
+		font-size: var(--text-sm);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		font-weight: 600;
+	}
+
+	h1 {
+		font-size: clamp(2.75rem, 6vw, 4.5rem);
+		margin-top: var(--space-4);
+		color: var(--color-text);
+		line-height: 1.05;
+		letter-spacing: -0.02em;
+	}
+
+	.lede {
+		margin-top: var(--space-6);
+		font-size: var(--text-2xl);
+		color: var(--color-text-muted);
+		max-width: 30ch;
+		line-height: 1.35;
+	}
+
+	.tagline {
+		margin-top: var(--space-8);
+		color: var(--color-text-faint);
+		font-size: var(--text-sm);
+	}
+
+	/* ---- Full-width diagram below the copy ---- */
+	.hero-visual {
+		width: 100%;
+	}
+
+	/* ---- Mobile: stack, diagram below copy ---- */
+	@media (max-width: 900px) {
+		.hero-grid {
+			gap: var(--space-8);
+		}
+	}
