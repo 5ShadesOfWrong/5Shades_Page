@@ -27,28 +27,23 @@
 			"facets": [
 				{
 					"name": "Rule contradiction",
-					"example": "A rule-based explainer justifies the rejection with mutually exclusive conditions (“income < $30k and income > $80k”).",
-					"source": "Fioravanti 2025"
+					"example": "A rule-based explainer justifies the rejection with mutually exclusive conditions (“income < $30k and income > $80k”)."
 				},
 				{
 					"name": "Counterfactual contradiction",
-					"example": "A counterfactual explanation requires the applicant to simultaneously increase and decrease their requested loan amount.",
-					"source": "Brughmans 2023"
+					"example": "A counterfactual explanation requires the applicant to simultaneously increase and decrease their requested loan amount."
 				},
 				{
 					"name": "Stochastic instability",
-					"example": "A stochastic local feature attribution method reports income simultaneously boosts (+30) and lowers (−20) credit score across runs.",
-					"source": "Visani 2022"
+					"example": "A stochastic local feature attribution method reports income simultaneously boosts (+30) and lowers (−20) credit score across runs."
 				},
 				{
 					"name": "Non-sequitur examples",
-					"example": "An example-based method justifies the rejection using similarities with three images from a conflicting class (“accepted”).",
-					"source": "Spitzer 2025"
+					"example": "An example-based method justifies the rejection using similarities with three images from a conflicting class (“accepted”)."
 				},
 				{
 					"name": "Semantic non-sequitur",
-					"example": "An LLM-generated explanation for the rejection states: “Your loan has been approved because our evaluation shows severe insolvency and a high probability of imminent default.”",
-					"source": "Kim 2025"
+					"example": "An LLM-generated explanation for the rejection states: “Your loan has been approved because our evaluation shows severe insolvency and a high probability of imminent default.”"
 				}
 			],
 			"footnote": "An explanation is already incoherent if it corresponds to a single facet. It can — but does not need to — correspond to multiple facets.",
@@ -78,23 +73,19 @@
 			"facets": [
 				{
 					"name": "Invalid feature values",
-					"example": "A local attribution-based method reports a bank balance of $0, when the applicant's real-world balance is $50,000.",
-					"source": "Hase 2021"
+					"example": "A local attribution-based method reports a bank balance of $0, when the applicant's real-world balance is $50,000."
 				},
 				{
 					"name": "Invalid target label",
-					"example": "Any explanation plausibly justifies acceptance of the applicant even though the applicant will default.",
-					"source": "Rudin 2019"
+					"example": "Any explanation plausibly justifies acceptance of the applicant even though the applicant will default."
 				},
 				{
 					"name": "Spurious proxies",
-					"example": "A local attribution-based method reports the applicant's zip code as a primary reason for rejection, even though zip code is only a demographic proxy for race rather than a causal driver of creditworthiness.",
-					"source": "Deck 2024"
+					"example": "A local attribution-based method reports the applicant's zip code as a primary reason for rejection, even though zip code is only a demographic proxy for race rather than a causal driver of creditworthiness."
 				},
 				{
 					"name": "Invalid counterfactual",
-					"example": "A counterfactual explanation suggests to increase income by $300, but the applicant would default even with this profile.",
-					"source": "Guidotti 2022"
+					"example": "A counterfactual explanation suggests to increase income by $300, but the applicant would default even with this profile."
 				}
 			],
 			"footnote": "An explanation is already invalid if it corresponds to a single facet. It can — but does not need to — correspond to multiple facets.",
@@ -124,23 +115,19 @@
 			"facets": [
 				{
 					"name": "Incomplete attribution",
-					"example": "A local attribution-based method lists only income and experience to justify the rejection, even though the model used zip code to reject an applicant.",
-					"source": "Aivodji 2019; Slack 2020"
+					"example": "A local attribution-based method lists only income and experience to justify the rejection, even though the model used zip code to reject an applicant."
 				},
 				{
 					"name": "Inverse attribution",
-					"example": "A global attribution-based method reports that lower age increases credit risk, whereas the model's internal logic uses lower age to decrease risk.",
-					"source": "Miro-Nicolau 2024"
+					"example": "A global attribution-based method reports that lower age increases credit risk, whereas the model's internal logic uses lower age to decrease risk."
 				},
 				{
 					"name": "Ineffective counterfactual",
-					"example": "A counterfactual method suggests to switch employment status, but varying all employment status options yields the exact same model score.",
-					"source": "Guidotti 2022"
+					"example": "A counterfactual method suggests to switch employment status, but varying all employment status options yields the exact same model score."
 				},
 				{
 					"name": "LLM rationalization",
-					"example": "An LLM-generated explanation for the rejection states: “Your loan has been rejected because our evaluation shows severe insolvency and a high probability of imminent default.” However, probing the model's chain of reasoning reveals that it did not read in the applicant's data but researched typical reasons for rejections.",
-					"source": "Kim 2025"
+					"example": "An LLM-generated explanation for the rejection states: “Your loan has been rejected because our evaluation shows severe insolvency and a high probability of imminent default.” However, probing the model's chain of reasoning reveals that it did not read in the applicant's data but researched typical reasons for rejections."
 				}
 			],
 			"footnote": "An explanation is already unfaithful if it corresponds to a single facet. It can — but does not need to — correspond to multiple facets.",

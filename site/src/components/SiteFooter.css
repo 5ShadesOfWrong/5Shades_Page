@@ -42,65 +42,9 @@
 	}
 
 	/* ---- Citation ---- */
-	.authors {
-		margin-top: var(--space-3);
-		font-weight: 600;
-	}
-
-	.paper-title {
-		color: var(--color-text-muted);
-	}
-
-	.paper-venue {
-		color: var(--color-text-faint);
-		font-size: var(--text-sm);
-	}
-
+	
 	.link-disabled {
 		color: var(--color-text-faint);
-	}
-
-	.bibtex {
-		margin-top: var(--space-4);
-	}
-
-	.bibtex summary {
-		cursor: pointer;
-		color: var(--color-link);
-		font-weight: 600;
-	}
-
-	.bibtex pre {
-		margin-top: var(--space-3);
-		padding: var(--space-4);
-		background: var(--color-bg-overlay);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-md);
-		font-size: var(--text-sm);
-		overflow-x: auto;
-		white-space: pre-wrap;
-	}
-
-	.copy-btn {
-		margin-top: var(--space-3);
-		padding: var(--space-2) var(--space-4);
-		background: transparent;
-		color: var(--color-link);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-md);
-		font-size: var(--text-sm);
-		cursor: pointer;
-		transition: border-color var(--duration-fast) var(--ease-out);
-	}
-
-	.copy-btn:hover {
-		border-color: var(--color-link);
-	}
-
-	.copy-status {
-		margin-left: var(--space-3);
-		font-size: var(--text-sm);
-		color: var(--color-positive);
 	}
 
 	/* ---- Links ---- */

@@ -44,8 +44,6 @@ export interface SiteData {
 export interface LensFacet {
 	name: string;
 	example: string;
-	/** Short citation — where this pattern was introduced/observed (table). */
-	source?: string;
 }
 
 export interface LensExample {
