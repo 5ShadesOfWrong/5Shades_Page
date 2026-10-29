@@ -1,6 +1,6 @@
 {
   "$comment": "site.json — global site metadata.",
-  "title": "Explanation Wrongness",
+  "title": "5 Shades of Wrong",
   "subtitle": "Three lenses to tell when an AI explanation is wrong — and which kind of wrong it is.",
   "kicker": "An interactive companion to the paper",
   "landing": {
@@ -19,7 +19,7 @@
   },
   "authors": "Anonymous et al.",
   "license": "CC BY 4.0",
-  "bibtex": "@misc{shadesofwrong2026,\n  title     = {5(0) Shades of Wrong: Toward a Common Language for \"Wrong\" AI Explanations},\n  author    = {Anonymous},\n  year      = {2026},\n  note      = {Companion site: Explanation Wrongness}\n}",
+  "bibtex": "@misc{shadesofwrong2026,\n  title     = {5(0) Shades of Wrong: Toward a Common Language for \"Wrong\" AI Explanations},\n  author    = {Anonymous},\n  year      = {2026},\n  note      = {Companion site: 5 Shades of Wrong}\n}",
   "tagline": {
     "reader": "Scroll to learn: three lenses, six archetypes, thirteen scenarios.",
     "presenter": "Present live: click-to-reveal cards, projection-ready sections."
