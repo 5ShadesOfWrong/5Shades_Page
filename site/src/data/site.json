@@ -1,5 +1,5 @@
 {
-	"$comment": "site.json — global site metadata. ANONYMIZED per review 2026-10-26: the webpage must not reveal authors/affiliations until the paper is public. Real author list preserved here for later re-enable: Luca Deck, Anton Hummel, Paula Ziethmann, Katelyn Morrison, Philipp Spitzer and Niklas Kühl (also restore them in the bibtex author field). The tutorial deck is an internal working reference and is intentionally NOT cited anywhere on the page.",
+	"$comment": "site.json — global site metadata.",
 	"title": "Explanation Wrongness",
 	"subtitle": "Three lenses to tell when an AI explanation is wrong — and which kind of wrong it is.",
 	"kicker": "An interactive companion to the paper",

@@ -7,13 +7,113 @@
 		max-width: 56ch;
 	}
 
-	/* ---- Three equal columns: better screen division, shorter page ---- */
-	.lens-cards {
+	/* ---- Positive baseline: the shared running example (table row 1) ---- */
+	.baseline {
 		margin-top: var(--space-8);
+		padding: var(--space-6) var(--space-8);
+		background: var(--color-bg-raised);
+		border: 1px solid color-mix(in srgb, var(--color-positive) 45%, var(--color-border));
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-card);
+	}
+
+	.baseline-title {
+		margin: 0;
+		font-size: var(--text-lg);
+		color: var(--color-positive);
+	}
+
+	.baseline-quote {
+		margin: var(--space-3) 0 0;
+		font-family: var(--font-display);
+		font-size: var(--text-xl);
+		line-height: 1.4;
+	}
+
+	.baseline-context {
+		margin-top: var(--space-3);
+		font-size: var(--text-sm);
+		color: var(--color-text-faint);
+	}
+
+	/* ---- Three lens columns (the table's three dimensions) ---- */
+	.lens-cards {
+		margin-top: var(--space-6);
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: var(--space-6);
 		align-items: start;
+	}
+
+	.lens-col {
+		background: var(--color-bg-raised);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		padding: var(--space-6);
+		scroll-margin-top: var(--space-8);
+	}
+
+	.lens-head {
+		display: flex;
+		align-items: baseline;
+		gap: var(--space-4);
+	}
+
+	.lens-number {
+		font-family: var(--font-mono);
+		font-size: var(--text-2xl);
+		color: var(--color-model);
+	}
+
+	.lens-col h3 {
+		margin: 0;
+		font-size: var(--text-xl);
+	}
+
+	.relationship {
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+		margin-top: var(--space-1);
+	}
+
+	/* Why the positive baseline holds under this lens (table row 2). */
+	.baseline-why {
+		margin-top: var(--space-4);
+		font-size: var(--text-sm);
+		color: var(--color-text-muted);
+	}
+
+	/* ---- Negative examples (collapsible, like the old facets) ---- */
+	.negatives {
+		margin-top: var(--space-4);
+	}
+
+	.negatives summary {
+		cursor: pointer;
+		font-weight: 600;
+		color: var(--color-link);
+	}
+
+	.negatives summary:hover {
+		text-decoration: underline;
+	}
+
+	.facet-count {
+		color: var(--color-text-faint);
+		font-weight: 400;
+	}
+
+	.negatives ul {
+		margin-top: var(--space-3);
+		padding-left: var(--space-6);
+		display: grid;
+		gap: var(--space-2);
+		font-size: var(--text-sm);
+	}
+
+	.source {
+		color: var(--color-text-faint);
+		font-size: var(--text-xs);
 	}
 
 	/* ---- Mobile/tablet: stack ---- */

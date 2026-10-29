@@ -80,14 +80,18 @@ const LENS_IDS = ['coherence', 'validity', 'faithfulness'] as const;
 
 function validateLenses(data: Json): data is LensesData {
 	const file = 'lenses.json';
-	const d = data as { lenses?: unknown };
+	const d = data as { lenses?: unknown; positiveBaseline?: unknown };
+	const pb = d.positiveBaseline as Record<string, unknown> | undefined;
+	if (!pb || !isStr(pb.title) || !isStr(pb.explanation) || !isStr(pb.context)) {
+		fail(file, 'positiveBaseline needs title/explanation/context strings');
+	}
 	if (!Array.isArray(d.lenses) || d.lenses.length !== 3) {
 		fail(file, 'must contain exactly 3 lenses');
 		return false;
 	}
 	const ids = new Set<string>();
 	for (const lens of d.lenses as Record<string, unknown>[]) {
-		checkStrs(file, lens, ['id', 'name', 'relationship', 'definition', 'footnote']);
+		checkStrs(file, lens, ['id', 'name', 'relationship', 'definition', 'baselineWhy', 'footnote']);
 		if (!LENS_IDS.includes(lens.id as never)) fail(file, `unknown lens id "${lens.id}"`);
 		ids.add(String(lens.id));
 		if (!Array.isArray(lens.facets) || lens.facets.length === 0) {

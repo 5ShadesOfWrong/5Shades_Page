@@ -44,6 +44,8 @@ export interface SiteData {
 export interface LensFacet {
 	name: string;
 	example: string;
+	/** Short citation — where this pattern was introduced/observed (table). */
+	source?: string;
 }
 
 export interface LensExample {
@@ -62,6 +64,8 @@ export interface Lens {
 	/** Concise one-line definition for hover tooltips. */
 	tooltip: string;
 	definition: string;
+	/** Why the shared positive baseline holds under this lens (table row 1). */
+	baselineWhy: string;
 	/** Per-lens example box headers (e.g. Coherent/Incoherent). */
 	exampleHeaders: { good: string; flawed: string };
 	goodExample: LensExample;
@@ -70,7 +74,14 @@ export interface Lens {
 	footnote: string;
 }
 
+export interface LensPositiveBaseline {
+	title: string;
+	explanation: string;
+	context: string;
+}
+
 export interface LensesData {
+	positiveBaseline: LensPositiveBaseline;
 	lenses: Lens[];
 }
 
