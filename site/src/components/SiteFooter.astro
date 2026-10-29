@@ -7,13 +7,14 @@ const paperHref = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${site.paper.f
 
 // Partner logos (site/public/logos/). Alt text is required — update the
 // names here if the logo set changes. joinBase keeps them subpath-safe.
+
 const logos = [
-	{ file: 'logos/logo1.png', alt: 'Carnegie Mellon University' },
-	{ file: 'logos/logo2.png', alt: 'IAB — Institut für Arbeitsmarkt und Berufsforschung' },
-	{ file: 'logos/logo3.png', alt: 'Universität Bayreuth' },
-	{ file: 'logos/logo4.png', alt: 'ARC — Applied Research Center' },
-	{ file: 'logos/logo5.png', alt: 'XITASO' },
-	{ file: 'logos/logo6.png', alt: 'Karlsruhe Institute of Technology' },
+	{ file: 'logos/logo1.png', alt: 'Partner institution 1' },
+	{ file: 'logos/logo2.png', alt: 'Partner institution 2' },
+	{ file: 'logos/logo3.png', alt: 'Partner institution 3' },
+	{ file: 'logos/logo4.png', alt: 'Partner institution 4' },
+	{ file: 'logos/logo5.png', alt: 'Partner institution 5' },
+	{ file: 'logos/logo6.png', alt: 'Partner institution 6' },
 ];
 
 /**
@@ -32,7 +33,7 @@ function joinBase(file: string): string {
 
 <footer id="footer" class="section footer" aria-labelledby="footer-title">
 	<div class="container">
-		<h2 id="footer-title" data-reveal>Cite & Explore</h2>
+		<h2 id="footer-title" data-reveal>Explore</h2>
 
 		<!-- Partner logos — COMMENTED per review 2026-10-26: the site must not
 		     reveal affiliations until the paper is public. Re-enable by
@@ -53,24 +54,7 @@ function joinBase(file: string): string {
 		-->
 
 		<div class="footer-grid">
-			<!-- Citation -->
-			<div class="cite">
-				<h3>Citation</h3>
-				<p class="authors">{site.authors}</p>
-				<p class="paper-title">{site.paper.title}</p>
-				{
-					site.paper.venue && <p class="paper-venue">{site.paper.venue}</p>
-				}
-
-				<details class="bibtex">
-					<summary>BibTeX</summary>
-					<pre data-bibtex-source>{site.bibtex}</pre>
-					<button type="button" class="copy-btn" data-bibtex-copy>
-						Copy BibTeX
-					</button>
-					<span class="copy-status" data-bibtex-status role="status" aria-live="polite"></span>
-				</details>
-			</div>
+			
 
 			<!-- Links -->
 			<nav class="links" aria-label="Footer links">
@@ -104,7 +88,4 @@ function joinBase(file: string): string {
 		</p>
 	</div>
 </footer>
-
-
-<script src="../scripts/bibtex.ts"></script>
 

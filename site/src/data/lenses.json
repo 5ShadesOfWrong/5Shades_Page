@@ -1,5 +1,10 @@
 {
-	"$comment": "lenses.json — the three wrongness dimensions. Source: paper p.3–8. Each lens: definition, one valid + one flawed example, and the facets of failure listed in the paper.",
+	"$comment": "lenses.json — the three wrongness dimensions. Source: paper p.3–8 + the dimensions/examples table (credit-scoring running example). Structure per user review 2026-10-29: shared positive baseline, per-lens baseline rationale, negative examples (collapsible).",
+	"positiveBaseline": {
+		"title": "Positive baseline",
+		"explanation": "The loan applicant was denied because their income is low and debt-to-income ratio is high, exceeding the default risk threshold.",
+		"context": "Running example: an AI-based credit scoring system."
+	},
 	"lenses": [
 		{
 			"id": "coherence",
@@ -8,6 +13,7 @@
 			"relationship": "Explanation ↔ itself",
 			"tooltip": "The explanation is logically consistent with itself — no contradictions inside.",
 			"definition": "Whether the explanation maintains a consistent and logical internal structure. A lack of coherence means the internal structure is logically conflicting, contradictory, or structurally impossible — independent of whether premises and conclusions are valid.",
+			"baselineWhy": "The explanation forms a logically consistent syllogism. It would be coherent even if the premises were false and the applicant would have repaid their loan.",
 			"goodExample": {
 				"setup": "A movie recommender suggests “Inception”.",
 				"explanation": "“You rated ‘Interstellar’ 5 stars, and both films are directed by Christopher Nolan.”",
@@ -20,20 +26,24 @@
 			},
 			"facets": [
 				{
-					"name": "Contradictory feature values",
-					"example": "A CV-screening attribution reports the candidate is eligible because he was born in 1970 and is aged 20."
+					"name": "Rule contradiction",
+					"example": "A rule-based explainer justifies the rejection with mutually exclusive conditions (“income < $30k and income > $80k”)."
 				},
 				{
-					"name": "Contradictory counterfactual",
-					"example": "A counterfactual suggests keeping your age and increasing work experience by 10 years to get the loan approved."
+					"name": "Counterfactual contradiction",
+					"example": "A counterfactual explanation requires the applicant to simultaneously increase and decrease their requested loan amount."
 				},
 				{
-					"name": "Contradictory examples",
-					"example": "An example-based method for “cat” returns a cat, a dog, and a car."
+					"name": "Stochastic instability",
+					"example": "A stochastic local feature attribution method reports income simultaneously boosts (+30) and lowers (−20) credit score across runs."
 				},
 				{
-					"name": "Contradictory semantics",
-					"example": "An LLM rationale justifies a recommendation with mutually exclusive premises (“you love romantic comedies and strictly avoid romantic films”)."
+					"name": "Non-sequitur examples",
+					"example": "An example-based method justifies the rejection using similarities with three images from a conflicting class (“accepted”)."
+				},
+				{
+					"name": "Semantic non-sequitur",
+					"example": "An LLM-generated explanation for the rejection states: “Your loan has been approved because our evaluation shows severe insolvency and a high probability of imminent default.”"
 				}
 			],
 			"footnote": "An explanation is already incoherent if it corresponds to a single facet. It can — but does not need to — correspond to multiple facets.",
@@ -49,6 +59,7 @@
 			"relationship": "Explanation ↔ ground truth",
 			"tooltip": "The explanation matches the real-world facts — what is actually true.",
 			"definition": "Whether the explanation aligns with the real-world ground truth the model seeks to reflect — both the factual premises and the ground-truth outcomes. A lack of validity means the explanation asserts factually incorrect claims and/or misrepresents actual patterns or causal relations.",
+			"baselineWhy": "The explanation is only valid given that the data is correct, these features predict empirically observable real-world default risk, and the applicant would have defaulted. It would still be valid if this is not the logic the model actually applied.",
 			"goodExample": {
 				"setup": "An email filter correctly flags a message as spam.",
 				"explanation": "“Flagged because it was sent from an unknown sender, contains 12 suspicious links, and asks for your banking passwords.”",
@@ -62,19 +73,19 @@
 			"facets": [
 				{
 					"name": "Invalid feature values",
-					"example": "A loan is rejected with “current bank balance is $0”, when the applicant's real balance is $50,000."
-				},
-				{
-					"name": "Factually wrong premise",
-					"example": "Correct rain prediction explained by low humidity."
+					"example": "A local attribution-based method reports a bank balance of $0, when the applicant's real-world balance is $50,000."
 				},
 				{
 					"name": "Invalid target label",
-					"example": "A CV-screening attribution justifies a candidate as eligible who turns out to be ineligible."
+					"example": "Any explanation plausibly justifies acceptance of the applicant even though the applicant will default."
 				},
 				{
-					"name": "Causal misattribution",
-					"example": "A diagnostic AI correctly predicts engine failure but blames the “Check Engine” light turning on instead of the physical cause."
+					"name": "Spurious proxies",
+					"example": "A local attribution-based method reports the applicant's zip code as a primary reason for rejection, even though zip code is only a demographic proxy for race rather than a causal driver of creditworthiness."
+				},
+				{
+					"name": "Invalid counterfactual",
+					"example": "A counterfactual explanation suggests to increase income by $300, but the applicant would default even with this profile."
 				}
 			],
 			"footnote": "An explanation is already invalid if it corresponds to a single facet. It can — but does not need to — correspond to multiple facets.",
@@ -90,6 +101,7 @@
 			"relationship": "Explanation ↔ model behavior",
 			"tooltip": "The explanation reflects how the model actually processed the input.",
 			"definition": "How well the explanation represents the true internal reasoning and mechanics of the AI model. A lack of faithfulness means the explanation is misaligned with how the model actually processed the input to reach its prediction.",
+			"baselineWhy": "The explanation is only faithful if income and debt-to-income ratio were actually the primary factors driving the classification. It would still be faithful if the applicant would have repaid their loan.",
 			"goodExample": {
 				"setup": "A spam filter assigns 90% of its internal risk weight to the phrase “claim your free prize now”.",
 				"explanation": "The feature attribution reports “claim your free prize now” as the top factor driving the spam classification.",
@@ -103,23 +115,19 @@
 			"facets": [
 				{
 					"name": "Incomplete attribution",
-					"example": "Zip code drives the rejection but is omitted from the explanation report."
+					"example": "A local attribution-based method lists only income and experience to justify the rejection, even though the model used zip code to reject an applicant."
 				},
 				{
 					"name": "Inverse attribution",
-					"example": "The explanation says lower age increases risk; in the model's decision tree, lower age decreases it."
-				},
-				{
-					"name": "Irrelevant attribution",
-					"example": "Coding skills are highlighted as decisive, but changing the skill level yields the exact same score."
+					"example": "A global attribution-based method reports that lower age increases credit risk, whereas the model's internal logic uses lower age to decrease risk."
 				},
 				{
 					"name": "Ineffective counterfactual",
-					"example": "“Add $2,000 to savings for approval” — the user does exactly that and is still rejected."
+					"example": "A counterfactual method suggests to switch employment status, but varying all employment status options yields the exact same model score."
 				},
 				{
 					"name": "LLM rationalization",
-					"example": "The model cites a clinical trial, but probing internal activations shows the output was driven by token co-occurrence in pre-training data."
+					"example": "An LLM-generated explanation for the rejection states: “Your loan has been rejected because our evaluation shows severe insolvency and a high probability of imminent default.” However, probing the model's chain of reasoning reveals that it did not read in the applicant's data but researched typical reasons for rejections."
 				}
 			],
 			"footnote": "An explanation is already unfaithful if it corresponds to a single facet. It can — but does not need to — correspond to multiple facets.",

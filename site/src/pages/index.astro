@@ -10,6 +10,11 @@
  *   - ArchetypeGallery replaced by ArchetypeViewer (one at a time).
  *   - AssessmentWorkflow + Takeaway are COMMENTED OUT for now (may return).
  *
+ * User review 2026-10-29:
+ *   - Reordered so "Explanation Wrongness" (HowToAccess's intro + teaser)
+ *     precedes "How to Assess Wrongness" (HeroSection, now also carrying
+ *     the "every scenario is assessed the same way" step ladder).
+ *
  * Security: static markup + typed data imports; no dynamic HTML injection.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -28,14 +33,14 @@ import SiteFooter from '../components/SiteFooter.astro';
 // ids are deep-link anchors used by presenters mid-talk (DESIGN_PLAN §4).
 const sections = [
 	{ id: 'landing', label: '5 Shades of Wrong' },
-	{ id: 'hero', label: 'Introduction' },
-	{ id: 'how-to-access', label: 'How to Assess' },
+	{ id: 'how-to-access', label: 'Explanation Wrongness' },
+	{ id: 'hero', label: 'How to Assess' },
 	{ id: 'three-lenses', label: 'Three Lenses' },
 	{ id: 'archetypes', label: '5(0) Shades of Wrong' },
 	// { id: 'workflow', label: 'Assessment Workflow' }, // commented per user review
 	// { id: 'practice', label: 'Practice Scenarios' }, // commented per user review 2026-10-21
 	// { id: 'takeaway', label: 'Takeaway' }, // commented per user review
-	{ id: 'footer', label: 'Cite & Explore' },
+	{ id: 'footer', label: 'Explore' },
 ] as const;
 
 const DESCRIPTION =
@@ -46,8 +51,8 @@ const DESCRIPTION =
 	<NavRail sections={sections} slot="global-nav" />
 
 	<LandingHero />
-	<HeroSection />
 	<HowToAccess />
+	<HeroSection />
 	<ThreeLenses />
 	<ArchetypeViewer />
 	<!-- <AssessmentWorkflow /> — commented per user review 2026-10-19 (may return) -->

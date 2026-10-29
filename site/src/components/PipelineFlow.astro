@@ -6,8 +6,9 @@ import './PipelineFlow.css';
  * (user review 2026-10-21: match the paper figure — three nodes with icons,
  * labeled arrows, numbered callout boxes, and lightning stickers).
  *
- * Layout (mirrors the paper figure):
- *   - Top: green callout "1. What the explainee sees"
+ * Layout (mirrors the paper figure, plus a context row):
+ *   - Top: neutral callout "Read the context" (precedes the split below)
+ *   - Below it: green callout "1. What the explainee sees"
  *   - Middle row: Ground Truth —(Machine Learning)→ Explanation ←(XAI Method)— AI Model
  *   - Stickers: 2. Validity (under the left arrow), 1. Coherence (above the
  *     chart, with the loop arrow), 3. Faithfulness (under the right arrow)
@@ -18,21 +19,29 @@ import './PipelineFlow.css';
 ---
 
 <figure class="flow">
-	{/* ---- 1. What the explainee sees (top, green) ---- */}
-	<div class="callout callout-seen">
-		<h3>1. What the explainee sees</h3>
-		<ul>
-			<li><strong>Explanation:</strong> What does the XAI method show as an explanation?</li>
-		</ul>
+	{/* ---- 0. Read the context + 1. What the explainee sees (top) ----
+	     Stacked in one wrapper so both callouts share the same width
+	     (user review 2026-10-29 — "Read the context" must match the
+	     width of "What the explainee sees"). ---- */}
+	<div class="callout-stack">
+		<div class="callout callout-context">
+			<h3>0.Read the context</h3>
+		
+			<strong>Scenario:</strong> What is the AI system, its purpose, and who engages with the explanation?
+			
+		</div>
+
+		<div class="callout callout-seen">
+			<h3>1. What the explainee sees</h3>
+			<strong>Explanation:</strong> What does the XAI method show as an explanation?
+		</div>
 	</div>
 
 	{/* ---- 2. Ground truth (left, purple) ---- */}
 	<div class="callout callout-truth">
 		<h3>2. Ground truth</h3>
-		<ul>
-			<li><strong>Outcome:</strong> What would be the true prediction?</li>
-			<li><strong>Premise:</strong> What are the causal assumptions for predictions?</li>
-		</ul>
+		<p><strong>Outcome:</strong> What would be the true prediction?</p>
+		<p><strong>Premise:</strong> What are the causal assumptions for predictions?</p>
 	</div>
 
 	{/* ---- Central flow: Ground Truth → Explanation ← AI Model ---- */}
@@ -104,10 +113,12 @@ import './PipelineFlow.css';
 	{/* ---- 3. Actual model behavior (right, blue) ---- */}
 	<div class="callout callout-behavior">
 		<h3>3. Actual model behavior</h3>
-		<ul>
-			<li><strong>Output of the AI model:</strong> What does the AI model show as the output?</li>
-			<li>How did the model actually come to this output?</li>
-		</ul>
+		<p>
+			<strong>Output of the AI model:</strong> What does the AI model show as the output?
+		</p>
+		<p>
+			How did the model actually come to this output?
+		</p>
 	</div>
 </figure>
 

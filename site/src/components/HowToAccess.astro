@@ -3,52 +3,28 @@ import './HowToAccess.css';
 import site from '../data/site.json';
 
 /**
- * HowToAccess.astro — §1 "How to Assess" (user review 2026-10-19)
- * ---------------------------------------------------------------
+ * HowToAccess.astro — §1 "Explanation Wrongness" (user review 2026-10-19)
+ * -------------------------------------------------------------------
  * Introduces the idea of wrongness exactly like the source material:
- * the motivating example, then the assessment flow (steps 1–4) as the
- * "how to use this page" — not reader/presenter mode cards.
+ * the motivating example that sets up "wrong — but how?"
  *
- * The four steps render as an interactive ladder: each lights up as it
- * enters the viewport (reveal.ts + CSS), previewing the workflow.
+ * The step-by-step assessment ladder ("every scenario is assessed the
+ * same way") moved to HeroSection.astro per user review 2026-10-29, so
+ * it sits directly under the "How to Assess Wrongness" title it details.
  *
  * Security: static content, auto-escaped.
  */
-
-const steps = [
-	{
-		number: 1,
-		title: 'Read the context',
-		text: 'Understand the scenario — the AI system, its purpose, and who engages with the explanation.',
-	},
-	{
-		number: 2,
-		title: 'Observe the explanation itself',
-		text: 'Judge its (internal logical) coherence — does the explanation hold together on its own?',
-	},
-	{
-		number: 3,
-		title: 'Consider the ground truth',
-		text: 'Judge validity — does the explanation align with what is actually true?',
-	},
-	{
-		number: 4,
-		title: 'Consider the actual model behavior',
-		text: 'Judge faithfulness — does the explanation reflect how the model really worked?',
-	},
-];
-
 ---
 
 <section id="how-to-access" class="section" aria-labelledby="access-title">
 	<div class="container">
-		<h2 id="access-title">How to Assess</h2>
+		<h2 id="access-title">Explanation Wrongness</h2>
 		<p class="intro">
-			Explanations can be wrong — but &ldquo;wrong&rdquo; is not one thing. The
-			scenarios in this page describe hypothetical situations in which a
+			Explanations can be wrong — but &ldquo;wrong&rdquo; is not one thing. 
+			<!-- The	scenarios in this page describe hypothetical situations in which a
 			stakeholder engages with an explanation of a concrete AI model. Each
 			scenario is self-contained, so models and explanations vary between
-			scenarios.
+			scenarios. -->
 		</p>
 
 		<aside class="teaser" data-reveal aria-label="Motivating example">
@@ -64,25 +40,9 @@ const steps = [
 				Or both?
 			</p>
 			<p class="teaser-answer">
-				It depends which reference point you use to judge the explanation —
-				and there are <a href="#three-lenses">three of them</a>.
+				It depends which reference point you use to judge the explanation — but how do we assess wrongness systematically?
 			</p>
 		</aside>
-
-		<h3 class="flow-title">Every scenario is assessed the same way:</h3>
-		<ol class="assess-flow" role="list">
-			{
-				steps.map((step, i) => (
-					<li class="flow-step" data-reveal data-reveal-delay={i}>
-						<span class="flow-number">{step.number}</span>
-						<div>
-							<h4>{step.title}</h4>
-							<p>{step.text}</p>
-						</div>
-					</li>
-				))
-			}
-		</ol>
 	</div>
 </section>
 

@@ -35,53 +35,64 @@ const perfect = data.archetypes.find((a) => a.id === 'perfect-explainer') as Arc
 	{
 		perfect?.scene && (
 			<div class="hero-backdrop">
-				{/* One scene at a time: Ground Truth → Prediction → Explanation.
-				    The arrow advances; question + caption change with each step.
-				    The scene stays greyed so the headline keeps the spotlight, but
-				    the texts and arrow use the section's normal colors. Step 1 also
-				    carries a "Ground truth" tag on the image's top-right corner. */}
+				{/* One scene at a time: Ground Truth → Model decision → Explanation.
+				    Three labeled buttons below the image switch directly between
+				    the cases (user review 2026-10-28 — replaces the arrow button
+				    and the corner tag). The scene stays ghosted; texts and buttons
+				    use the section's normal colors. */}
 				<div class="backdrop-stage" data-backdrop-stage>
 					{[
 						{
 							kind: 'groundtruth' as const,
+							name: 'Ground Truth',
 							question: 'What is the perfect explainer?',
-							tag: 'Ground truth',
 							caption:
 								'The image shows a wolf. It is possible to identify it by the shape of the body — the ears, the snout, the posture.',
 							label: 'Ground truth scene: the untouched image — it truly shows a wolf.',
 						},
 						{
 							kind: 'prediction' as const,
+							name: 'Model decision',
 							question: 'What is the perfect explainer?',
-							tag: 'Prediction',
 							caption:
 								'In the perfect explainer, the model uses the shape of the animal as the feature and predicts that it is a wolf.',
 							label: 'Prediction scene: the model actually used the shape (purple).',
 						},
 						{
 							kind: 'explanation' as const,
+							name: 'Explanation',
 							question: 'What is the perfect explainer?',
-							tag: 'Explanation',
 							caption:
 								'In the perfect explainer, the explanation highlights the shape too, giving the same reason as the model — nothing hidden, nothing invented.',
 							label: 'Explanation scene: the explanation highlights the shape (green — honest).',
 						},
 					].map((step, i) => (
-						<div class="backdrop-step" hidden={i !== 0} data-backdrop-step>
+						<div class="backdrop-step" hidden={i !== 0} data-backdrop-step data-step-kind={step.kind}>
 							<p class="backdrop-question">{step.question}</p>
 							<div class="backdrop-frame">
 								<ScenePanel kind={step.kind} scene={perfect.scene} label={step.label} bare />
-								<span class="backdrop-tag" data-tag={step.kind}>
-									{step.tag}
-								</span>
 							</div>
 							<p class="backdrop-caption">{step.caption}</p>
 						</div>
 					))}
 				</div>
-				<button type="button" class="backdrop-next" data-backdrop-next aria-label="Next step">
-					→
-				</button>
+
+				<div class="backdrop-tabs" data-backdrop-tabs role="tablist" aria-label="Perfect explainer views">
+					{[
+						{ kind: 'groundtruth' as const, name: 'Ground Truth' },
+						{ kind: 'prediction' as const, name: 'Model decision' },
+						{ kind: 'explanation' as const, name: 'Explanation' },
+					].map((tab, i) => (
+						<button
+							type="button"
+							class:list={['backdrop-tab', { active: i === 0 }]}
+							data-backdrop-tab={tab.kind}
+							aria-pressed={i === 0 ? 'true' : 'false'}
+						>
+							{tab.name}
+						</button>
+					))}
+				</div>
 			</div>
 		)
 	}
@@ -105,21 +116,28 @@ const perfect = data.archetypes.find((a) => a.id === 'perfect-explainer') as Arc
 </section>
 
 <script>
-	// Hero backdrop step-through: cycles Ground Truth → Prediction →
-	// Explanation. Attribute-scoped so it only touches this card; the arrow
-	// advances, question + caption swap with the scene. No dynamic HTML.
+	// Hero backdrop switcher: three labeled buttons (Ground Truth / Model
+	// decision / Explanation) jump directly to their scene. Attribute-scoped;
+	// no dynamic HTML.
 	const stage = document.querySelector('[data-backdrop-stage]');
 	if (stage) {
 		const steps = Array.from(stage.querySelectorAll<HTMLElement>('[data-backdrop-step]'));
-		const next = stage.parentElement?.querySelector<HTMLButtonElement>('[data-backdrop-next]');
-		let index = 0;
+		const tabs = Array.from(
+			stage.parentElement?.querySelectorAll<HTMLButtonElement>('[data-backdrop-tab]') ?? []
+		);
 
-		const show = (n: number) => {
-			index = (n + steps.length) % steps.length;
-			steps.forEach((s, i) => (s.hidden = i !== index));
+		const show = (kind: string) => {
+			steps.forEach((s) => (s.hidden = s.dataset.stepKind !== kind));
+			tabs.forEach((t) => {
+				const active = t.dataset.backdropTab === kind;
+				t.classList.toggle('active', active);
+				t.setAttribute('aria-pressed', active ? 'true' : 'false');
+			});
 		};
 
-		next?.addEventListener('click', () => show(index + 1));
+		for (const tab of tabs) {
+			tab.addEventListener('click', () => show(tab.dataset.backdropTab ?? ''));
+		}
 	}
 </script>
 

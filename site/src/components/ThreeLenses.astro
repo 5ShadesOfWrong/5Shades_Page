@@ -1,16 +1,19 @@
 ---
 import './ThreeLenses.css';
 import lenses from '../data/lenses.json';
-import LensCard from './LensCard.astro';
 import type { LensesData } from '../schemas/schemas';
 
-
-const lensList = (lenses as unknown as LensesData).lenses;
+const data = lenses as unknown as LensesData;
+const baseline = data.positiveBaseline;
+const lensList = data.lenses;
 /**
- * ThreeLenses.astro — §2 The Three Lenses (user review 2026-10-21)
- * --------------------------------------------------------------
- * Intro copy + one LensCard per lens from lenses.json, laid out in three
- * equal columns (no diagram — the pipeline lives in the hero now).
+ * ThreeLenses.astro — §2 The Three Lenses (table layout, user review 2026-10-29)
+ * ------------------------------------------------------------------------------
+ * Mirrors the paper's dimensions/examples table:
+ *   [ Positive baseline card — shared credit-scoring explanation ]
+ *   [ Coherence ] [ Validity ] [ Faithfulness ]  ← name + relationship
+ *   [ per-lens rationale for why the baseline holds ]
+ *   [ Negative examples — collapsible <details> per lens ]
  *
  * Security: data from typed JSON; auto-escaped rendering.
  */
@@ -25,8 +28,49 @@ const lensList = (lenses as unknown as LensesData).lenses;
 			itself, so start there and work outward.
 		</p>
 
+		{/* ---- Positive baseline (shared running example, table row 1) ---- */}
+		<div class="baseline" data-reveal data-reveal-delay="2">
+			<h3 class="baseline-title">{baseline.title}</h3>
+			<blockquote class="baseline-quote">
+				&ldquo;{baseline.explanation}&rdquo;
+			</blockquote>
+			<p class="baseline-context">{baseline.context}</p>
+		</div>
+
+		{/* ---- Three lens columns: name + relationship + baseline rationale ---- */}
 		<div class="lens-cards">
-			{ lensList.map((lens, i) => <div data-reveal data-reveal-delay={i}><LensCard lens={lens} /></div>) }
+			{
+				lensList.map((lens, i) => (
+					<article class="lens-col" id={`lens-${lens.id}`} aria-labelledby={`lens-${lens.id}-title`} data-reveal data-reveal-delay={i}>
+						<header class="lens-head">
+							<span class="lens-number" aria-hidden="true">{lens.number}</span>
+							<div>
+								<h3 id={`lens-${lens.id}-title`}>{lens.name}</h3>
+								<p class="relationship">{lens.relationship}</p>
+							</div>
+						</header>
+
+						<p class="baseline-why">{lens.baselineWhy}</p>
+
+						{/* Negative examples — collapsible, same pattern as the old facets */}
+						<details class="negatives">
+							<summary>
+								Negative examples
+								<span class="facet-count">({lens.facets.length})</span>
+							</summary>
+							<ul>
+								{
+									lens.facets.map((ex) => (
+										<li>
+											<strong>{ex.name}:</strong> {ex.example}
+										</li>
+									))
+								}
+							</ul>
+						</details>
+					</article>
+				))
+			}
 		</div>
 	</div>
 </section>

@@ -2,11 +2,25 @@
  * tokens.css — Design tokens for Shade Page
  * ------------------------------------------
  * Single source of truth for the visual language.
- * Accent colors reuse the paper's own legend (p.29):
- *   purple = features actually used by the model
- *   green  = features highlighted in the explanation (positive)
- *   red    = features highlighted in the explanation (negative)
- *   gray   = unimportant features
+ *
+ * Color system (user review 2026-10-29 — aligned with the paper's figures):
+ * three INDEPENDENT semantic axes, each with its own hue family so no
+ * color means two different things at once:
+ *
+ *   Axis A — the three wrongness DIMENSIONS (fixed identity everywhere a
+ *            dimension is referenced: lens cards, pipeline highlights,
+ *            assessment steps). See --dim-coherence/validity/faithfulness.
+ *   Axis B — VERDICT (correct/honest vs. wrong/misleading). See
+ *            --color-positive/--color-negative. Kept separate from Axis A
+ *            so "unfaithful" (a lens) is never confused with "wrong" (a
+ *            verdict) by color alone.
+ *   Axis C — structural ROLE (Ground Truth / Explanation / Prediction) and
+ *            general brand accent. See --color-model (role/brand purple)
+ *            and --color-focus (Explanation role / focus ring).
+ *
+ * All five accent hues are drawn from the Okabe–Ito colorblind-safe
+ * qualitative palette (adjusted in lightness for the dark background) so
+ * Axis A and Axis B stay distinguishable under deuteranopia/protanopia.
  *
  * Dark theme base (DESIGN_PLAN §6). All color pairs used for text must
  * keep WCAG AA contrast (≥ 4.5:1) — verified pairs are marked below.
@@ -26,15 +40,38 @@
 	--color-text-muted: #b8c2e4; /* secondary text — 7.5:1 on bg */
 	--color-text-faint: #909bc4; /* captions — 5:1 on bg */
 
-	/* ---- Color: paper legend accents (meaningful use only) ---- */
+	/* ---- Color: paper legend accents (meaningful use only) ----
+	 * --color-model / --color-positive / --color-negative / --color-neutral
+	 * remain the ARCHETYPE legend (purple = model-used, teal = honest
+	 * highlight, vermillion = misleading highlight, gray = unimportant) —
+	 * identical semantics to the paper's wolf/husky figure. positive/negative
+	 * were shifted from plain green/red to the Okabe–Ito-derived teal/
+	 * vermillion pair below so the SAME verdict pair also works as the
+	 * colorblind-safe Axis B (correct/honest vs. wrong/misleading) used for
+	 * verdict chips elsewhere on the page.
+	 */
 	--color-model: #b39bff; /* purple — model-used features */
-	--color-positive: #4ade80; /* green — highlighted/positive */
-	--color-negative: #fb7185; /* red — highlighted/negative */
+	--color-positive: #34d8b0; /* teal — highlighted/honest/correct (was #4ade80) */
+	--color-negative: #ff8a5b; /* vermillion — highlighted/misleading/wrong (was #fb7185) */
 	--color-neutral: #808db8; /* gray — unimportant */
 
 	/* ---- Color: interactive ---- */
 	--color-link: #8ecbff; /* links — 9:1 on bg */
 	--color-focus: #ffd166; /* focus ring — high visibility */
+
+	/* ---- Color: wrongness DIMENSIONS (Axis A) ----
+	 * Fixed, unique identity per dimension, used identically everywhere a
+	 * lens/dimension is referenced (PipelineDiagram, PipelineFlow,
+	 * AssessmentWorkflow, LensCard numbers). Deliberately reuses the
+	 * --color-model/--color-focus/--color-link hues (distinct from Axis B's
+	 * teal/vermillion) rather than inventing a 6th/7th/8th hue on an
+	 * already five-hue palette — but canonicalizes ONE fixed mapping,
+	 * replacing the three different mappings that used to compete across
+	 * components (user review 2026-10-29).
+	 */
+	--dim-coherence: var(--color-model); /* purple — explanation vs. itself */
+	--dim-validity: var(--color-focus); /* amber — explanation vs. ground truth */
+	--dim-faithfulness: var(--color-link); /* blue — explanation vs. model */
 
 	/* ---- Ambient background glows (depth without clutter) ---- */
 	--glow-model: rgb(179 155 255 / 0.14);

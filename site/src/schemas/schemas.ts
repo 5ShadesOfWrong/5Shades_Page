@@ -62,6 +62,8 @@ export interface Lens {
 	/** Concise one-line definition for hover tooltips. */
 	tooltip: string;
 	definition: string;
+	/** Why the shared positive baseline holds under this lens (table row 1). */
+	baselineWhy: string;
 	/** Per-lens example box headers (e.g. Coherent/Incoherent). */
 	exampleHeaders: { good: string; flawed: string };
 	goodExample: LensExample;
@@ -70,7 +72,14 @@ export interface Lens {
 	footnote: string;
 }
 
+export interface LensPositiveBaseline {
+	title: string;
+	explanation: string;
+	context: string;
+}
+
 export interface LensesData {
+	positiveBaseline: LensPositiveBaseline;
 	lenses: Lens[];
 }
 
@@ -103,6 +112,8 @@ export interface Archetype {
 	summary: string;
 	prediction: string;
 	explanation: string;
+	/** Feature the untouched image truly shows (Ground-Truth panel fact). */
+	groundTruthFeature: string;
 	modelUsed: string;
 	highlighted: string;
 	/** Explicit scene semantics for the two panels (user spec 2026-10-21). */
