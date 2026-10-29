@@ -1,7 +1,7 @@
 {
   "$comment": "site.json — global site metadata.",
   "title": "5 Shades of Wrong",
-  "subtitle": "Three lenses to tell when an AI explanation is wrong — and which kind of wrong it is.",
+  "subtitle": "A common Language on Wrong AI Explanations.",
   "kicker": "An interactive companion to the paper",
   "landing": {
     "title": "5 Shades of Wrong",
