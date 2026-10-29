@@ -24,11 +24,23 @@
 	}
 
 	.navrail-dots a {
+		position: relative; /* anchors the hover label */
 		display: flex;
 		align-items: center;
-		gap: var(--space-2);
+		justify-content: center;
 		text-decoration: none;
 		padding: var(--space-1);
+	}
+
+	/* The hover label must NOT take layout space: as a static flex child it
+	   made every rail link ~140px wide, pushing an invisible box ~46px into
+	   the page content — the image/diagram appeared to sit "in front of the
+	   page markers" on notebook screens (user bug report 2026-10-29). */
+	.navrail-dots a .label {
+		position: absolute;
+		right: calc(100% + var(--space-2));
+		top: 50%;
+		translate: 0 -50%;
 	}
 
 	.dot {
@@ -54,6 +66,7 @@
 		transition: opacity var(--duration-fast) var(--ease-out),
 			transform var(--duration-fast) var(--ease-out);
 		white-space: nowrap;
+		pointer-events: none;
 	}
 
 	.navrail-dots a:hover .label,

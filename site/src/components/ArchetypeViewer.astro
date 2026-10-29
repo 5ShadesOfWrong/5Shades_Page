@@ -204,20 +204,42 @@ const GROUND_PATH = 'M0 152 Q 60 138 120 150 T 240 146 L 240 200 L 0 200 Z';
 												: [{ cx: 120, cy: 30, r: 14, key: 'leftMoon', crescent: false }];
 										const figure = (
 											<figure class="scene-figure">
-												{/* Verdict slot above the scene: only the Explanation panel
-												    carries the Coherence chip (paper scheme — the sticker
-												    floats above the chart). Empty slots on the other panels
-												    keep all three scenes vertically aligned. */}
-												<div class="chip-slot">
-													{panel.kind === 'explanation' && (
-														<span class:list={['chip', a.coherent ? 'chip--positive' : 'chip--negative']}>
-															<Term
-																term="Coherent"
-																definition={a.coherent ? termTips.Coherent.ok : termTips.Coherent.bad}
-																variant={a.coherent ? 'yes' : 'no'}
-															/>
-														</span>
-													)}
+												{/* Panel header above the scene (user review 2026-10-28):
+												    the scheme icon + its name — "Ground truth",
+												    "Explanation", "Prediction" — matching the §2 scheme
+												    nodes. The Coherence verdict chip stays on the
+												    Explanation panel, next to the label. */}
+												<div class="scene-head">
+													<span class="scene-icon">
+														{panel.kind === 'groundtruth' && (
+															<svg viewBox="0 0 48 48" aria-hidden="true">
+																<circle cx="24" cy="24" r="18" />
+																<ellipse cx="24" cy="24" rx="8" ry="18" />
+																<line x1="6" y1="24" x2="42" y2="24" />
+															</svg>
+														)}
+														{panel.kind === 'explanation' && (
+															<svg viewBox="0 0 48 48" aria-hidden="true">
+																<rect x="6" y="10" width="7" height="30" class="bar" />
+																<rect x="17" y="18" width="7" height="22" class="bar" />
+																<rect x="28" y="26" width="7" height="14" class="bar" />
+																<rect x="39" y="32" width="7" height="8" class="bar" />
+															</svg>
+														)}
+														{panel.kind === 'prediction' && (
+															<svg viewBox="0 0 48 48" aria-hidden="true">
+																<rect x="12" y="12" width="24" height="24" rx="4" />
+																<text x="24" y="29" text-anchor="middle" class="chip-text">AI</text>
+																<line x1="17" y1="5" x2="17" y2="12" /><line x1="24" y1="5" x2="24" y2="12" /><line x1="31" y1="5" x2="31" y2="12" />
+																<line x1="17" y1="36" x2="17" y2="43" /><line x1="24" y1="36" x2="24" y2="43" /><line x1="31" y1="36" x2="31" y2="43" />
+																<line x1="5" y1="17" x2="12" y2="17" /><line x1="5" y1="24" x2="12" y2="24" /><line x1="5" y1="31" x2="12" y2="31" />
+																<line x1="36" y1="17" x2="36" y2="24" /><line x1="36" y1="24" x2="43" y2="24" /><line x1="36" y1="31" x2="43" y2="31" />
+															</svg>
+														)}
+													</span>
+													<span class="scene-title">
+														{isTruth ? 'Ground truth' : isPred ? 'Prediction' : 'Explanation'}
+													</span>
 												</div>
 												<div
 													class:list={[
@@ -292,55 +314,20 @@ const GROUND_PATH = 'M0 152 Q 60 138 120 150 T 240 146 L 240 200 L 0 200 Z';
 														style={`-webkit-mask-image: url(${import.meta.env.BASE_URL.replace(/\/$/, '')}/${WOLF_MASK}); mask-image: url(${import.meta.env.BASE_URL.replace(/\/$/, '')}/${WOLF_MASK});`}
 														aria-hidden="true"
 													/>
-													{/* Scheme icon badge (user review 2026-10-28): the same
-													    node icon as the §2 scheme, overlaid on each scene —
-													    globe (Ground Truth), bar chart (Explanation),
-													    AI chip (Prediction) — tinted with the panel color. */}
-													<span class="scene-badge" aria-hidden="true">
-														{panel.kind === 'groundtruth' && (
-															<svg viewBox="0 0 48 48">
-																<circle cx="24" cy="24" r="18" />
-																<ellipse cx="24" cy="24" rx="8" ry="18" />
-																<line x1="6" y1="24" x2="42" y2="24" />
-															</svg>
-														)}
-														{panel.kind === 'explanation' && (
-															<svg viewBox="0 0 48 48">
-																<rect x="6" y="10" width="7" height="30" class="bar" />
-																<rect x="17" y="18" width="7" height="22" class="bar" />
-																<rect x="28" y="26" width="7" height="14" class="bar" />
-																<rect x="39" y="32" width="7" height="8" class="bar" />
-															</svg>
-														)}
-														{panel.kind === 'prediction' && (
-															<svg viewBox="0 0 48 48">
-																<rect x="12" y="12" width="24" height="24" rx="4" />
-																<text x="24" y="29" text-anchor="middle" class="chip-text">AI</text>
-																<line x1="17" y1="5" x2="17" y2="12" /><line x1="24" y1="5" x2="24" y2="12" /><line x1="31" y1="5" x2="31" y2="12" />
-																<line x1="17" y1="36" x2="17" y2="43" /><line x1="24" y1="36" x2="24" y2="43" /><line x1="31" y1="36" x2="31" y2="43" />
-																<line x1="5" y1="17" x2="12" y2="17" /><line x1="5" y1="24" x2="12" y2="24" /><line x1="5" y1="31" x2="12" y2="31" />
-																<line x1="36" y1="17" x2="36" y2="24" /><line x1="36" y1="24" x2="43" y2="24" /><line x1="36" y1="31" x2="43" y2="31" />
-															</svg>
-														)}
-													</span>
 											</div>
-											<figcaption class="scene-caption">
-												{isTruth ? (
-													<>
-														Ground truth: <strong class="ok">it is a wolf</strong> —
-														given the shape presented in the image
-													</>
-												) : isPred ? (
-													<>
-														Prediction:{' '}
-														<strong class:list={[state.honest ? 'ok' : 'bad']}>
-															{a.prediction}
-														</strong>
-													</>
-												) : (
-													'Explanation'
-												)}
-											</figcaption>
+											{/* Coherence verdict BELOW the Explanation image (user review
+											    2026-10-29) — the green/red chip sits under the panel. */}
+											{panel.kind === 'explanation' && (
+												<div class="scene-foot">
+													<span class:list={['chip', a.coherent ? 'chip--positive' : 'chip--negative']}>
+														<Term
+															term="Coherent"
+															definition={a.coherent ? termTips.Coherent.ok : termTips.Coherent.bad}
+															variant={a.coherent ? 'yes' : 'no'}
+														/>
+													</span>
+												</div>
+											)}
 										</figure>
 									);
 
@@ -387,14 +374,22 @@ const GROUND_PATH = 'M0 152 Q 60 138 120 150 T 240 146 L 240 200 L 0 200 Z';
 									<div class="story">
 										<p class="explanation">&ldquo;{a.explanation}&rdquo;</p>
 
+										{/* Facts aligned under their panels (user review 2026-10-29):
+										    ground-truth feature under Ground Truth, explanation
+										    highlight under Explanation, used feature under
+										    Prediction — same columns as the scheme row. */}
 										<dl class="facts">
-											<div>
-												<dt>Model actually used</dt>
-												<dd class="used">{a.modelUsed}</dd>
+											<div class="fact fact-truth">
+												<dt>Ground truth feature</dt>
+												<dd class="truth">{a.groundTruthFeature}</dd>
 											</div>
-											<div>
+											<div class="fact fact-highlight">
 												<dt>Explanation highlighted</dt>
 												<dd class:list={['highlighted', { bad: !explanationHonest }]}>{a.highlighted}</dd>
+											</div>
+											<div class="fact fact-used">
+												<dt>Model actually used</dt>
+												<dd class="used">{a.modelUsed}</dd>
 											</div>
 										</dl>
 

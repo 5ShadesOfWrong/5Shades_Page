@@ -133,6 +133,15 @@ video {
 	padding-inline: var(--space-6);
 }
 
+/* Reserve room for the fixed nav rail (desktop): without it, wide
+   children (diagram callouts, panel grids) slide under the page
+   markers on notebook screens (user bug report 2026-10-29). */
+@media (min-width: 769px) {
+	.container {
+		padding-right: calc(var(--space-6) + var(--navrail-width));
+	}
+}
+
 /* Section rhythm: generous but not wasteful — content breathes, space is used. */
 .section {
 	padding-block: var(--space-24);

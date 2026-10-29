@@ -116,7 +116,17 @@ function validateArchetypes(data: Json): data is ArchetypesData {
 	}
 	const letters = new Set<string>();
 	for (const a of d.archetypes as Record<string, unknown>[]) {
-		checkStrs(file, a, ['id', 'letter', 'name', 'summary', 'prediction', 'explanation', 'modelUsed', 'highlighted']);
+		checkStrs(file, a, [
+			'id',
+			'letter',
+			'name',
+			'summary',
+			'prediction',
+			'explanation',
+			'groundTruthFeature',
+			'modelUsed',
+			'highlighted',
+		]);
 		if (a.verdict !== 'correct' && a.verdict !== 'wrong') {
 			fail(file, `archetype "${a.id}" verdict must be "correct" or "wrong"`);
 		}

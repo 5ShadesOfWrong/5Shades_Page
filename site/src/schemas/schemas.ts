@@ -103,6 +103,8 @@ export interface Archetype {
 	summary: string;
 	prediction: string;
 	explanation: string;
+	/** Feature the untouched image truly shows (Ground-Truth panel fact). */
+	groundTruthFeature: string;
 	modelUsed: string;
 	highlighted: string;
 	/** Explicit scene semantics for the two panels (user spec 2026-10-21). */

@@ -135,16 +135,8 @@
 		gap: var(--space-2);
 	}
 
-	/* Slot above each scene. Only the Explanation panel fills it (Coherence
-	   verdict, floating above the chart like the paper's sticker); the empty
-	   slots on the other panels keep all three scenes vertically aligned. */
-	.chip-slot {
-		min-height: 1.75rem;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		margin-bottom: var(--space-1);
-	}
+	/* (The old chip-slot was replaced by .scene-head — the Coherence chip
+	   now rides in the header row next to the Explanation label.) */
 
 	.flow-arrow .line {
 		display: block;
@@ -183,52 +175,66 @@
 	}
 
 	/* Panel borders follow the §2 scheme colors (user review 2026-10-28):
-	   Ground Truth = purple (model color), Explanation = green (positive),
-	   Prediction = blue (link color). Border only — the scenes stay neutral. */
+	   Ground Truth = purple (model color), Explanation = gold (focus —
+	   matches the §2 explanation accent, no longer green), Prediction =
+	   blue (link color). Border only — the scenes stay neutral. */
 	.scene-truth {
 		border-color: var(--color-model);
 	}
 
 	.scene-explanation {
-		border-color: var(--color-positive);
+		border-color: var(--color-focus);
 	}
 
 	.scene-prediction {
 		border-color: var(--color-link);
 	}
 
-	/* Scheme icon badge (user review 2026-10-28): the same node icon as the
-	   §2 scheme, overlaid on each scene's corner — globe (Ground Truth),
-	   bar chart (Explanation), AI chip (Prediction) — tinted with the panel
-	   color so the badge, border, and scheme node all read as one system. */
-	.scene-badge {
-		position: absolute;
-		top: 6px;
-		left: 6px;
-		width: 26px;
-		height: 26px;
+	/* Panel header ABOVE the scene (user review 2026-10-28): the §2 scheme
+	   icon + its name — "Ground truth", "Explanation", "Prediction". */
+	.scene-head {
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		background: color-mix(in srgb, var(--color-bg) 82%, transparent);
-		border-radius: var(--radius-sm);
-		pointer-events: none;
+		gap: var(--space-2);
+		margin-bottom: var(--space-2);
+		min-height: 1.75rem;
 	}
 
-	.scene-badge svg {
-		width: 18px;
-		height: 18px;
+	/* Coherence verdict BELOW the Explanation image (user review 2026-10-29):
+	   centered under the panel; empty on the other panels. */
+	.scene-foot {
+		margin-top: var(--space-2);
+		display: flex;
+		justify-content: center;
+		min-height: 1.5rem;
+	}
+
+	/* Named .scene-icon (NOT .scene-badge) so ScenePanel.css's absolute
+	   corner-badge rule cannot leak in here — that leak was pinning the
+	   Ground-Truth icon to the card's top-left corner (user bug 2026-10-29). */
+	.scene-icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 22px;
+		flex: none;
+	}
+
+	.scene-icon svg {
+		width: 22px;
+		height: 22px;
 		fill: none;
 		stroke: currentColor;
 		stroke-width: 2.5;
 	}
 
-	.scene-badge .bar {
+	.scene-icon .bar {
 		fill: currentColor;
 		stroke: none;
 	}
 
-	.scene-badge .chip-text {
+	.scene-icon .chip-text {
 		fill: currentColor;
 		stroke: none;
 		font-family: var(--font-mono);
@@ -236,16 +242,24 @@
 		font-weight: 700;
 	}
 
-	/* Panel-tinted badge colors, matching the border classes above. */
-	.scene-truth .scene-badge {
+	.scene-title {
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--color-text-muted);
+	}
+
+	/* Panel-tinted header colors, matching the border classes above. */
+	.scene-truth .scene-head {
 		color: var(--color-model);
 	}
 
-	.scene-explanation .scene-badge {
-		color: var(--color-positive);
+	.scene-explanation .scene-head {
+		color: var(--color-focus);
 	}
 
-	.scene-prediction .scene-badge {
+	.scene-prediction .scene-head {
 		color: var(--color-link);
 	}
 
@@ -383,13 +397,37 @@
 		margin-top: var(--space-2);
 		font-style: italic;
 		font-size: var(--text-lg);
+		/* Centered block with a readable measure (user review 2026-10-29) */
+		max-width: 46ch;
+		margin-inline: auto;
+		text-align: center;
 	}
 
+	/* Facts aligned under their panels (user review 2026-10-29): the three
+	   items reuse the scheme row's column tracks so each fact sits exactly
+	   below its image — ground-truth feature (left), explanation highlight
+	   (center), model-used feature (right). */
 	.facts {
 		margin-top: var(--space-6);
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: minmax(11rem, 14rem) 1fr minmax(11rem, 14rem) 1fr minmax(11rem, 14rem);
 		gap: var(--space-4);
+	}
+
+	.fact {
+		text-align: center;
+	}
+
+	.fact-truth {
+		grid-column: 1;
+	}
+
+	.fact-highlight {
+		grid-column: 3;
+	}
+
+	.fact-used {
+		grid-column: 5;
 	}
 
 	.facts dt {
@@ -419,6 +457,10 @@
 	.summary {
 		margin-top: var(--space-6);
 		color: var(--color-text-muted);
+		/* Centered block with a readable measure (user review 2026-10-29) */
+		max-width: 60ch;
+		margin-inline: auto;
+		text-align: center;
 	}
 
 	/* Verdict chips moved onto the scheme (user review 2026-10-28):
@@ -507,5 +549,11 @@
 
 		.facts {
 			grid-template-columns: 1fr;
+		}
+
+		.fact-truth,
+		.fact-highlight,
+		.fact-used {
+			grid-column: auto;
 		}
 	}
