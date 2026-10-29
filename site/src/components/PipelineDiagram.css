@@ -126,65 +126,68 @@
 		border: 1px solid currentColor;
 	}
 
+	/* Lens colors use the dedicated Axis-A dimension tokens (user review
+	   2026-10-29) — distinct from the Axis-B verdict tokens
+	   (--color-positive/--color-negative) used for correct/wrong chips. */
 	.chip-1 {
-		color: var(--color-model);
+		color: var(--dim-coherence);
 	}
 
 	.chip-2 {
-		color: var(--color-positive);
+		color: var(--dim-validity);
 	}
 
 	.chip-3 {
-		color: var(--color-negative);
+		color: var(--dim-faithfulness);
 	}
 
 	/* ---- Highlight states (one lens at a time) ---- */
 
 	/* Coherence: self-loop on the Explanation node */
 	.hl-coherence .edge-coherence {
-		stroke: var(--color-model);
+		stroke: var(--dim-coherence);
 		opacity: 1;
 		stroke-width: 2.5;
 	}
 	.hl-coherence .node-explanation rect {
-		stroke: var(--color-model);
-		fill: color-mix(in srgb, var(--color-model) 12%, var(--color-bg-raised));
+		stroke: var(--dim-coherence);
+		fill: color-mix(in srgb, var(--dim-coherence) 12%, var(--color-bg-raised));
 	}
 	.hl-coherence .badge-coherence circle {
-		stroke: var(--color-model);
+		stroke: var(--dim-coherence);
 	}
 	.hl-coherence .badge-coherence text {
-		fill: var(--color-model);
+		fill: var(--dim-coherence);
 	}
 
 	/* Validity: Explanation ↔ Ground Truth arc */
 	.hl-validity .edge-validity {
-		stroke: var(--color-positive);
+		stroke: var(--dim-validity);
 		opacity: 1;
 		stroke-width: 2.5;
 	}
 	.hl-validity .node-groundtruth rect {
-		stroke: var(--color-positive);
+		stroke: var(--dim-validity);
 	}
 	.hl-validity .badge-validity circle {
-		stroke: var(--color-positive);
+		stroke: var(--dim-validity);
 	}
 	.hl-validity .badge-validity text {
-		fill: var(--color-positive);
+		fill: var(--dim-validity);
 	}
 
 	/* Faithfulness: Explanation ↔ AI Model arc */
 	.hl-faithfulness .edge-faithfulness {
-		stroke: var(--color-negative);
+		stroke: var(--dim-faithfulness);
 		opacity: 1;
 		stroke-width: 2.5;
 	}
 	.hl-faithfulness .node-model rect {
-		stroke: var(--color-negative);
+		stroke: var(--dim-faithfulness);
 	}
 	.hl-faithfulness .badge-faithfulness circle {
-		stroke: var(--color-negative);
+		stroke: var(--dim-faithfulness);
 	}
 	.hl-faithfulness .badge-faithfulness text {
-		fill: var(--color-negative);
+		fill: var(--dim-faithfulness);
 	}

@@ -62,11 +62,28 @@
 		color: var(--color-text);
 	}
 
-	.callout-seen {
+	.callout-context {
+		width: 100%;
+	}
+
+	/* Stacks "Read the context" + "What the explainee sees" and forces
+	   them to share a width (the widest child's natural content width)
+	   via the fit-content/100% pairing (user review 2026-10-29). */
+	.callout-stack {
 		grid-column: 2;
 		grid-row: 1;
 		justify-self: center;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: var(--space-4);
+		width: fit-content;
+		max-width: 100%;
 		margin-bottom: var(--space-8);
+	}
+
+	.callout-seen {
+		width: 100%;
 		/* Explanation accent: gold (user review 2026-10-28) — distinct from
 		   the purple/blue nodes and no longer green. */
 		border-color: var(--color-focus);
@@ -185,16 +202,18 @@
 		fill: currentColor;
 	}
 
+	/* Lens stickers use the dedicated Axis-A dimension tokens (user review
+	   2026-10-29) — same fixed mapping as PipelineDiagram/AssessmentWorkflow. */
 	.sticker-coherence {
-		color: var(--color-focus);
+		color: var(--dim-coherence);
 	}
 
 	.sticker-validity {
-		color: var(--color-model);
+		color: var(--dim-validity);
 	}
 
 	.sticker-faithfulness {
-		color: var(--color-link);
+		color: var(--dim-faithfulness);
 	}
 
 	.loop {
@@ -218,7 +237,7 @@
 			grid-template-columns: 1fr;
 		}
 
-		.callout-seen {
+		.callout-stack {
 			grid-column: 1;
 			grid-row: 1;
 			margin-bottom: 0;
