@@ -69,8 +69,8 @@
 	 * replacing the three different mappings that used to compete across
 	 * components (user review 2026-10-29).
 	 */
-	--dim-coherence: var(--color-model); /* purple — explanation vs. itself */
-	--dim-validity: var(--color-focus); /* amber — explanation vs. ground truth */
+	--dim-coherence: var(--color-focus); /* amber — explanation vs. itself */
+	--dim-validity: var(--color-model); /* purple — explanation vs. ground truth */
 	--dim-faithfulness: var(--color-link); /* blue — explanation vs. model */
 
 	/* ---- Ambient background glows (depth without clutter) ---- */

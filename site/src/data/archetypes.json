@@ -1,13 +1,9 @@
 {
 	"$comment": "archetypes.json — the Perfect Explainer + 5 Shades of Wrong. Source: paper p.9 and p.29 (husky/wolf figure). Colors reference the paper legend: purple=model-used, green/red=highlighted, gray=unimportant.",
 	"legend": {
-		"used": {
-			"label": "Actually used features",
+		"relevant": {
+			"label": "Relevant features",
 			"color": "var(--color-model)"
-		},
-		"highlighted": {
-			"label": "Highlighted features",
-			"color": "var(--color-positive)"
 		},
 		"unimportant": {
 			"label": "Unimportant features",
@@ -23,7 +19,7 @@
 			"summary": "The explanation highlights the features the model actually used, and those features are the right reasons.",
 			"prediction": "Wolf",
 			"explanation": "The image shows a wolf because of the shape.",
-			"groundTruthFeature": "shape",
+			"groundTruthFeature": "shape and moon",
 			"modelUsed": "shape",
 			"highlighted": "shape",
 			"coherent": true,
@@ -53,7 +49,7 @@
 			"summary": "The explanation is coherent and valid on its face, but completely unfaithful: it hides what the model really used.",
 			"prediction": "Wolf",
 			"explanation": "The image shows a wolf because of the shape.",
-			"groundTruthFeature": "shape",
+			"groundTruthFeature": "shape and moon",
 			"modelUsed": "background",
 			"highlighted": "shape",
 			"coherent": true,
@@ -83,7 +79,7 @@
 			"summary": "The explanation faithfully shows what the model used — but what the model used is the wrong reason (spurious correlation).",
 			"prediction": "Husky",
 			"explanation": "The image shows a husky because of the background.",
-			"groundTruthFeature": "shape",
+			"groundTruthFeature": "shape and moon",
 			"modelUsed": "background",
 			"highlighted": "background",
 			"coherent": true,
@@ -114,12 +110,12 @@
 			"summary": "The model used the wrong reason, and the explanation highlights something else entirely — wrong on both counts.",
 			"prediction": "Husky",
 			"explanation": "The image shows a husky because of the 2 moons.",
-			"groundTruthFeature": "shape",
-			"modelUsed": "background",
+			"groundTruthFeature": "shape and moon",
+			"modelUsed": "2 moons",
 			"highlighted": "2 moons",
-			"coherent": true,
+			"coherent": false,
 			"valid": false,
-			"faithful": false,
+			"faithful": true,
 			"scene": {
 				"moons": 2,
 				"used": {
@@ -144,7 +140,7 @@
 			"summary": "The explanation tells a plausible story that matches neither the prediction nor the model's actual reasoning.",
 			"prediction": "Wolf",
 			"explanation": "The image shows a husky because of the background.",
-			"groundTruthFeature": "shape",
+			"groundTruthFeature": "shape and moon",
 			"modelUsed": "shape",
 			"highlighted": "background",
 			"coherent": true,
@@ -174,7 +170,7 @@
 			"summary": "The explanation contradicts itself and the prediction — internally incoherent.",
 			"prediction": "Wolf",
 			"explanation": "The image shows a husky because of the 2 moons.",
-			"groundTruthFeature": "shape",
+			"groundTruthFeature": "shape and moon",
 			"modelUsed": "shape",
 			"highlighted": "2 moons",
 			"coherent": false,

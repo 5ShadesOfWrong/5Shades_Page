@@ -87,8 +87,10 @@ function panelState(
 		kind === 'prediction'
 			? { 'feat-used': flags.leftMoon || flags.rightMoon, 'feat-dim': !(flags.leftMoon || flags.rightMoon) }
 			: {
-					'feat-hl-good': (flags.leftMoon || flags.rightMoon) && honest,
-					'feat-hl-bad': (flags.leftMoon || flags.rightMoon) && !honest,
+					// Relevant features use ONE color in both panels (user review
+					// 2026-10-29): the explanation highlight renders purple like the
+					// prediction's used features — no more green/red split.
+					'feat-used': flags.leftMoon || flags.rightMoon,
 					'feat-dim': !(flags.leftMoon || flags.rightMoon),
 				};
 
@@ -97,8 +99,7 @@ function panelState(
 			kind === 'prediction'
 				? { 'feat-used': flags.sky, 'feat-dim': !flags.sky }
 				: {
-						'feat-hl-good': flags.sky && honest,
-						'feat-hl-bad': flags.sky && !honest,
+						'feat-used': flags.sky,
 						'feat-dim': !flags.sky,
 					},
 		moonCls,
@@ -106,8 +107,7 @@ function panelState(
 			kind === 'prediction'
 				? { 'feat-used': flags.wolf, 'feat-dim': !flags.wolf }
 				: {
-						'feat-hl-good': flags.wolf && honest,
-						'feat-hl-bad': flags.wolf && !honest,
+						'feat-used': flags.wolf,
 						'feat-dim': !flags.wolf,
 					},
 	};
@@ -164,9 +164,6 @@ const GROUND_PATH = 'M0 152 Q 60 138 120 150 T 240 146 L 240 200 L 0 200 Z';
 							>
 								<header class="head">
 									<h3>{a.name}</h3>
-									<span class:list={['verdict', a.verdict]}>
-										{a.verdict === 'correct' ? 'correct' : 'wrong'}
-									</span>
 								</header>
 
 								<div class="body">
@@ -261,7 +258,7 @@ const GROUND_PATH = 'M0 152 Q 60 138 120 150 T 240 146 L 240 200 L 0 200 Z';
 																	? 'Ground truth scene: the untouched image — it truly shows a wolf, recognizable by its shape.'
 																	: isPred
 																		? `Prediction scene: the model actually used the ${a.modelUsed} (purple).`
-																		: `Explanation scene: the explanation highlights the ${a.highlighted} (${state.honest ? 'green — honest' : 'red — misleading'}).`
+																		: `Explanation scene: the explanation highlights the ${a.highlighted} (purple — relevant feature).`
 														}
 													>
 														<rect x="0" y="0" width="240" height="200" rx="12" class:list={['sky', state.skyCls]} />
@@ -278,8 +275,9 @@ const GROUND_PATH = 'M0 152 Q 60 138 120 150 T 240 146 L 240 200 L 0 200 Z';
 																: isPred
 																	? { 'feat-used': active, 'feat-dim': !active }
 																	: {
-																			'feat-hl-good': active && state.honest,
-																			'feat-hl-bad': active && !state.honest,
+																			// Same color as prediction: relevant features (user
+																			// review 2026-10-29) — no green/red split.
+																			'feat-used': active,
 																			'feat-dim': !active,
 																		};
 															// Waxing crescent: full disc minus an offset circle
@@ -321,7 +319,7 @@ const GROUND_PATH = 'M0 152 Q 60 138 120 150 T 240 146 L 240 200 L 0 200 Z';
 												<div class="scene-foot">
 													<span class:list={['chip', a.coherent ? 'chip--positive' : 'chip--negative']}>
 														<Term
-															term="Coherent"
+															term={a.coherent ? 'Coherent' : 'Incoherent'}
 															definition={a.coherent ? termTips.Coherent.ok : termTips.Coherent.bad}
 															variant={a.coherent ? 'yes' : 'no'}
 														/>
@@ -345,7 +343,7 @@ const GROUND_PATH = 'M0 152 Q 60 138 120 150 T 240 146 L 240 200 L 0 200 Z';
 										i === 0 ? (
 											<span class:list={['chip', a.valid ? 'chip--positive' : 'chip--negative']}>
 												<Term
-													term="Valid"
+													term={a.valid ? 'Valid' : 'Invalid'}
 													definition={a.valid ? termTips.Valid.ok : termTips.Valid.bad}
 													variant={a.valid ? 'yes' : 'no'}
 												/>
@@ -353,7 +351,7 @@ const GROUND_PATH = 'M0 152 Q 60 138 120 150 T 240 146 L 240 200 L 0 200 Z';
 										) : (
 											<span class:list={['chip', a.faithful ? 'chip--positive' : 'chip--negative']}>
 												<Term
-													term="Faithful"
+													term={a.faithful ? 'Faithful' : 'Unfaithful'}
 													definition={a.faithful ? termTips.Faithful.ok : termTips.Faithful.bad}
 													variant={a.faithful ? 'yes' : 'no'}
 												/>

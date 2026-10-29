@@ -91,26 +91,6 @@
 		text-shadow: 0 0 18px color-mix(in srgb, var(--color-text) 45%, transparent);
 	}
 
-	.verdict {
-		margin-left: auto;
-		font-family: var(--font-mono);
-		font-size: var(--text-xs);
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		padding: 3px 12px;
-		border-radius: 999px;
-	}
-
-	.verdict.correct {
-		color: var(--color-positive);
-		border: 1px solid var(--color-positive);
-	}
-
-	.verdict.wrong {
-		color: var(--color-negative);
-		border: 1px solid var(--color-negative);
-	}
-
 	/* ---- Body: scheme row (truth → explanation ← prediction) + story below ---- */
 	.body {
 		margin-top: var(--space-6);
@@ -442,16 +422,13 @@
 		font-weight: 600;
 	}
 
-	.facts .used {
-		color: var(--color-model);
-	}
-
-	.facts .highlighted {
-		color: var(--color-positive);
-	}
-
+	/* Relevant features share ONE color (user review 2026-10-29): the
+	   explanation highlight and the model-used feature both render in the
+	   model purple — no more green/red split in the facts row. */
+	.facts .used,
+	.facts .highlighted,
 	.facts .highlighted.bad {
-		color: var(--color-negative);
+		color: var(--color-model);
 	}
 
 	.summary {
